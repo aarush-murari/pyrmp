@@ -992,7 +992,7 @@ dev = [
 
 [package.metadata]
 requires-dist = [
-    { name = "gql", extras = ["all"], specifier = ">=3.0.0" },
+    { name = "gql", extras = ["all"], specifier = ">=4.0.0" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=7.0.0" },
     { name = "pytest-asyncio", marker = "extra == 'dev'", specifier = ">=0.21.0" },
     { name = "pytest-cov", marker = "extra == 'dev'", specifier = ">=4.0.0" },

@@ -41,6 +41,7 @@ from typing import Optional, List, Dict, Any, Union
 import time
 
 from gql import Client, gql
+from gql.graphql_request import GraphQLRequest
 from gql.transport.requests import RequestsHTTPTransport
 
 from .models import School, Teacher, Rating, SchoolRating, PaginatedResult
@@ -160,9 +161,10 @@ class RateMyProfessorClient:
         RateMyProfessorClient._last_request_time = time.time()
 
         try:
-            result = self.client.execute(
-                gql(query), variable_values=variable_values or {}
+            request = GraphQLRequest(
+                request=gql(query), variable_values=variable_values or {}
             )
+            result = self.client.execute(request)
             return result
         except Exception as e:
             error_msg = str(e)
