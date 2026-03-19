@@ -42,9 +42,17 @@ class School:
     summary: Optional[Dict[str, Any]] = None
 
     def __str__(self):
-        if self.name and self.city and self.state:
-            return f"{self.name} ({self.city}, {self.state})"
-        return "School"
+        parts = []
+        if self.name:
+            parts.append(self.name)
+        location_parts = []
+        if self.city:
+            location_parts.append(self.city)
+        if self.state:
+            location_parts.append(self.state)
+        if location_parts:
+            parts.append(f"({', '.join(location_parts)})")
+        return " ".join(parts) if parts else "School"
 
     def __repr__(self):
         return f"<School {self.name}>"
