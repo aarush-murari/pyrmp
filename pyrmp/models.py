@@ -1,8 +1,27 @@
 """
 Data models for pyrmp.
 
-This module provides Python dataclasses that represent the data structures
-returned by the RateMyProfessor API.
+These are the objects you'll be working with when searching for teachers,
+schools, or ratings. Each model wraps the data returned by the RateMyProfessor
+API in a Python dataclass.
+
+Typical usage::
+
+    from pyrmp import RateMyProfessorClient
+
+    client = RateMyProfessorClient()
+    teachers = client.search_teachers("John Smith", count=10)
+
+    for teacher in teachers.items:  # Teacher objects
+        print(teacher.full_name, teacher.avg_rating)
+        if teacher.school:
+            print(teacher.school.name)  # School object
+
+    ratings = client.get_teacher_ratings(teacher.id, count=5)
+    for rating in ratings.items:  # Rating objects
+        print(rating.comment, rating.clarity_rating)
+
+    client.close()
 """
 
 from typing import Optional, List, Dict, Any, Union
@@ -13,17 +32,32 @@ from datetime import datetime
 @dataclass
 class School:
     """
-    Represents a school or university on RateMyProfessor.
+    A school or university on RateMyProfessor.
+
+    You'll get School objects when searching for schools or when a teacher
+    is associated with a school.
+
+    Usage::
+
+        school = client.get_school_details("VGVhY2hlci0xMjM=")
+        print(school.name)      # "Stanford University"
+        print(school.num_ratings)  # 5000
+        print(school.avg_rating)   # 4.2
+
+        # When searching
+        results = client.search_schools("MIT")
+        for school in results.items:
+            print(school.name, school.city, school.state)
 
     Attributes:
-        id: The GraphQL node ID (base64 encoded).
-        legacy_id: The original numeric RMP ID.
-        name: Full school name.
+        id: Unique identifier for this school (used in API calls).
+        legacy_id: Original numeric ID from older RMP system.
+        name: Full school name (e.g., "Stanford University").
         city: City where the school is located.
-        state: State or region where the school is located.
+        state: State abbreviation (e.g., "CA").
         country: Country of the school.
-        num_ratings: Total number of school ratings.
-        avg_rating: Average overall rating (0.0-5.0).
+        num_ratings: Total number of ratings this school has received.
+        avg_rating: Average overall school rating (0.0-5.0).
         avg_rating_rounded: Average rating rounded to nearest 0.5.
         departments: List of departments at the school.
         summary: Detailed ratings for various school aspects.
@@ -61,21 +95,44 @@ class School:
 @dataclass
 class Teacher:
     """
-    Represents a teacher/professor on RateMyProfessor.
+    A teacher/professor on RateMyProfessor.
+
+    This is the main object you'll work with when searching for or
+    getting details about professors.
+
+    Usage::
+
+        # Search for teachers
+        results = client.search_teachers("John Smith")
+        teacher = results.items[0]
+
+        print(teacher.full_name)     # "John Smith"
+        print(teacher.avg_rating)    # 4.5
+        print(teacher.num_ratings)   # 100
+        print(teacher.department)    # "Computer Science"
+
+        # Teacher's school info
+        if teacher.school:
+            print(teacher.school.name)  # "Stanford University"
+
+        # Get more details
+        details = client.get_teacher_details(teacher.id)
+        print(details.would_take_again_percent)  # 80.0
+        print(details.avg_difficulty)            # 3.0
 
     Attributes:
-        id: The GraphQL node ID (base64 encoded).
-        legacy_id: The original numeric RMP ID.
+        id: Unique identifier for this teacher (used in API calls).
+        legacy_id: Original numeric ID from older RMP system.
         first_name: Teacher's first name.
         last_name: Teacher's last name.
-        department: Department the teacher belongs to.
+        department: Department the teacher belongs to (e.g., "Computer Science").
         department_id: Numeric department identifier.
         school: The school this teacher is associated with.
         avg_rating: Average rating from students (0.0-5.0).
         avg_difficulty: Average difficulty rating (0.0-5.0).
         num_ratings: Total number of ratings received.
         would_take_again_percent: Percentage of students who would take again.
-        ratings_distribution: Breakdown of rating distribution.
+        ratings_distribution: Breakdown of rating distribution (dict with r1-r5).
         course_codes: List of course codes taught by this teacher.
         lock_status: Whether the professor's page is locked.
         is_saved: Whether the professor is saved by the current user.
@@ -102,8 +159,19 @@ class Teacher:
         """
         Get the teacher's full name.
 
+        Returns the first and last name combined, or None if either is missing.
+        Useful for display purposes.
+
         Returns:
-            The teacher's first and last name combined, or None if either is missing.
+            "John Smith" if both names exist, None otherwise.
+
+        Example::
+
+            teacher = Teacher(id="1", first_name="John", last_name="Smith")
+            print(teacher.full_name)  # "John Smith"
+
+            teacher2 = Teacher(id="2", first_name="John")
+            print(teacher2.full_name)  # None
         """
         if self.first_name and self.last_name:
             return f"{self.first_name} {self.last_name}"
@@ -119,29 +187,46 @@ class Teacher:
 @dataclass
 class Rating:
     """
-    Represents an individual teacher rating.
+    An individual teacher rating/review from a student.
+
+    Ratings come from `client.get_teacher_ratings()` or
+    `client.get_rating_details()`.
+
+    Usage::
+
+        ratings = client.get_teacher_ratings(teacher_id, count=10)
+
+        for rating in ratings.items:
+            print(f"Rating: {rating.clarity_rating}/5")
+            print(f"Difficulty: {rating.difficulty_rating}/5")
+            print(f"Grade: {rating.grade}")
+            print(f"Class: {rating.class_name}")
+            print(f"Comment: {rating.comment}")
+            print(f"Would take again: {rating.would_take_again}")
+            print(f"Helpful votes: {rating.thumbs_up_total}")
+            print("---")
 
     Attributes:
-        id: The GraphQL node ID for this rating.
-        legacy_id: The original numeric RMP ID.
-        teacher: The teacher this rating is for.
-        comment: The written review text.
-        helpful_rating: Helpfulness rating (1-5).
-        clarity_rating: Clarity rating (1-5).
-        difficulty_rating: Difficulty rating (1-5).
-        grade: Grade received in the class.
-        class_name: Name of the class rated.
+        id: Unique identifier for this rating.
+        legacy_id: Original numeric ID from older RMP system.
+        teacher: The teacher this rating is for (if available).
+        comment: The written review text from the student.
+        helpful_rating: Helpfulness rating (1-5, where 5 is most helpful).
+        clarity_rating: Clarity rating (1-5, where 5 is most clear).
+        difficulty_rating: Difficulty rating (1-5, where 5 is most difficult).
+        grade: Grade received in the class (e.g., "A", "B+", "Pass").
+        class_name: Name of the class rated (e.g., "CS101").
         would_take_again: Whether the student would take the teacher again.
         is_for_credit: Whether the class was taken for credit.
-        textbook_used: Whether a textbook was used.
+        textbook_used: Whether a textbook was used in the class.
         attendance_mandatory: Whether attendance was mandatory.
         is_for_online_class: Whether this was for an online class.
-        rating_tags: List of tags describing the rating.
-        thumbs_up_total: Number of helpful votes.
-        thumbs_down_total: Number of unhelpful votes.
-        date: Date the rating was posted.
-        flag_status: Whether the rating has been flagged.
-        created_by_user: Whether this was created by the current user.
+        rating_tags: List of tags describing the rating (e.g., ["amazing lectures"]).
+        thumbs_up_total: Number of "helpful" votes this rating received.
+        thumbs_down_total: Number of "unhelpful" votes this rating received.
+        date: Date the rating was posted (string or datetime).
+        flag_status: Whether the rating has been flagged for review.
+        created_by_user: Whether this rating was created by the current user.
     """
 
     id: str
@@ -177,13 +262,27 @@ class Rating:
 @dataclass
 class SchoolRating:
     """
-    Represents a rating for an entire school.
+    A rating/review for an entire school (not a teacher).
+
+    School ratings come from `client.get_school_ratings()` or
+    `client.get_rating_details()`.
+
+    Usage::
+
+        ratings = client.get_school_ratings(school_id, count=10)
+
+        for rating in ratings.items:
+            print(f"Facilities: {rating.facilities_rating}/5")
+            print(f"Food: {rating.food_rating}/5")
+            print(f"Social: {rating.social_rating}/5")
+            print(f"Comment: {rating.comment}")
+            print("---")
 
     Attributes:
-        id: The GraphQL node ID for this rating.
-        legacy_id: The original numeric RMP ID.
-        school: The school this rating is for.
-        comment: The written review text.
+        id: Unique identifier for this school rating.
+        legacy_id: Original numeric ID from older RMP system.
+        school: The school this rating is for (if available).
+        comment: The written review text from the student.
         clubs_rating: Rating for clubs and activities (1-5).
         facilities_rating: Rating for facilities (1-5).
         food_rating: Rating for food quality (1-5).
@@ -233,15 +332,33 @@ class SchoolRating:
 @dataclass
 class PaginatedResult:
     """
-    Represents a paginated result set.
+    A page of results from a search or listing operation.
 
-    This wrapper provides a consistent interface for handling paginated API responses.
+    All search and listing methods return this wrapper. Use `items` to access
+    the actual Teacher/School/Rating objects, and `has_next_page`/`end_cursor`
+    for pagination.
+
+    Usage::
+
+        # Get first page
+        results = client.search_teachers("Smith", count=10)
+
+        print(len(results))           # Number of items in this page
+        print(bool(results))          # True if any items
+
+        for teacher in results.items:
+            print(teacher.full_name)
+
+        # Get next page
+        if results.has_next_page:
+            next_page = client.search_teachers("Smith", count=10)
+            # ... handle next_page
 
     Attributes:
-        items: List of items in the current page.
-        has_next_page: Whether there are more pages available.
-        end_cursor: Cursor to use for fetching the next page.
-        total_count: Total number of items (if available).
+        items: List of items in the current page (Teacher, School, or Rating objects).
+        has_next_page: Whether there are more pages available after this one.
+        end_cursor: Cursor string to use for fetching the next page.
+        total_count: Total number of items across all pages (if available).
     """
 
     items: List[Any]
@@ -250,9 +367,22 @@ class PaginatedResult:
     total_count: Optional[int] = None
 
     def __len__(self):
-        """Return the number of items in the current page."""
+        """Number of items in the current page.
+
+        Usage::
+
+            results = client.search_teachers("Smith")
+            print(len(results))  # e.g., 10
+        """
         return len(self.items)
 
     def __bool__(self):
-        """Return True if there are any items in the current page."""
+        """True if there are any items in the current page.
+
+        Usage::
+
+            results = client.search_teachers("nonexistent teacher")
+            if not results:
+                print("No teachers found")
+        """
         return len(self.items) > 0
