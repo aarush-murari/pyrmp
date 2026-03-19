@@ -54,7 +54,7 @@ pyrmp search "John Smith" --no-ids
 
 ## Documentation
 
-See [the SPhynx documentation]([docs.md](https://aarush-murari.github.io/pyrmp/api.html#exceptions)) for full API reference, examples, and advanced usage.
+See [the Sphynx documentation]([docs.md](https://aarush-murari.github.io/pyrmp/api.html#exceptions) for full API reference, examples, and advanced usage.
 
 ## License
 
