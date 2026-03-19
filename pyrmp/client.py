@@ -39,6 +39,7 @@ NOTE: This library is intentionally READ-ONLY. For write operations
 
 from typing import Optional, List, Dict, Any, Union
 import time
+import base64
 
 from gql import Client, gql
 from gql.graphql_request import GraphQLRequest
@@ -55,6 +56,37 @@ from .queries import (
     RATINGPAGE_QUERY,
 )
 from .exceptions import RateMyProfessorError, InvalidQueryError
+
+
+def _decode_id(b64_id: str) -> str:
+    """
+    Decode a base64-encoded ID to human-readable format.
+
+    Converts "VGVhY2hlci05NDExNzQ=" to "Teacher-941174".
+    Returns the original string if decoding fails.
+    """
+    try:
+        return base64.b64decode(b64_id).decode("utf-8")
+    except Exception:
+        return b64_id
+
+
+def _encode_id(readable_id: str) -> str:
+    """
+    Encode a human-readable ID to base64 format.
+
+    Converts "Teacher-941174" to "VGVhY2hlci05NDExNzQ=".
+    Returns the original string if it's already base64.
+    """
+    try:
+        # Check if already base64 by decoding - if it works and produces readable format, re-encode
+        decoded = base64.b64decode(readable_id).decode("utf-8")
+        if decoded.startswith(("Teacher-", "School-", "Rating-")):
+            return readable_id  # Already base64
+    except Exception:
+        pass
+    # Encode the readable ID
+    return base64.b64encode(readable_id.encode("utf-8")).decode("utf-8")
 
 
 class RateMyProfessorClient:
@@ -194,7 +226,7 @@ class RateMyProfessorClient:
         if teacher_node.get("school"):
             school_data = teacher_node["school"]
             school = School(
-                id=school_data.get("id", ""),
+                id=_decode_id(school_data.get("id", "")),
                 legacy_id=school_data.get("legacyId"),
                 name=school_data.get("name"),
                 city=school_data.get("city"),
@@ -206,7 +238,7 @@ class RateMyProfessorClient:
             )
 
         return Teacher(
-            id=teacher_node.get("id", ""),
+            id=_decode_id(teacher_node.get("id", "")),
             legacy_id=teacher_node.get("legacyId"),
             first_name=teacher_node.get("firstName"),
             last_name=teacher_node.get("lastName"),
@@ -239,7 +271,7 @@ class RateMyProfessorClient:
             return School(id="")
 
         return School(
-            id=school_node.get("id", ""),
+            id=_decode_id(school_node.get("id", "")),
             legacy_id=school_node.get("legacyId"),
             name=school_node.get("name"),
             city=school_node.get("city"),
@@ -269,7 +301,7 @@ class RateMyProfessorClient:
             return Rating(id="")
 
         return Rating(
-            id=rating_node.get("id", ""),
+            id=_decode_id(rating_node.get("id", "")),
             legacy_id=rating_node.get("legacyId"),
             teacher=teacher,
             comment=rating_node.get("comment"),
@@ -308,7 +340,7 @@ class RateMyProfessorClient:
             return SchoolRating(id="")
 
         return SchoolRating(
-            id=rating_node.get("id", ""),
+            id=_decode_id(rating_node.get("id", "")),
             legacy_id=rating_node.get("legacyId"),
             school=school,
             comment=rating_node.get("comment"),
@@ -470,7 +502,7 @@ class RateMyProfessorClient:
                 print(f"Would take again: {details.would_take_again_percent}%")
                 print(f"School: {details.school.name if details.school else 'N/A'}")
         """
-        variables = {"id": teacher_id}
+        variables = {"id": _encode_id(teacher_id)}
         response = self._execute_query(TEACHERRATINGSPAGE_QUERY, variables)
 
         teacher_node = response.get("node")
@@ -495,7 +527,7 @@ class RateMyProfessorClient:
                 school = client.get_school_details(results.items[0].id)
                 print(f"{school.name} - {school.num_ratings} ratings")
         """
-        variables = {"id": school_id}
+        variables = {"id": _encode_id(school_id)}
         response = self._execute_query(SCHOOLRATINGSPAGE_QUERY, variables)
 
         school_node = response.get("school")
@@ -541,7 +573,7 @@ class RateMyProfessorClient:
         """
         variables = {
             "count": count,
-            "id": teacher_id,
+            "id": _encode_id(teacher_id),
             "courseFilter": course_filter,
             "cursor": cursor,
         }
@@ -595,7 +627,7 @@ class RateMyProfessorClient:
                 print(f"Comment: {rating.comment}")
                 print("---")
         """
-        variables = {"count": count, "id": school_id, "cursor": cursor}
+        variables = {"count": count, "id": _encode_id(school_id), "cursor": cursor}
 
         response = self._execute_query(SCHOOLRATINGSLIST_QUERY, variables)
 
@@ -643,7 +675,7 @@ class RateMyProfessorClient:
                 print(f"Comment: {rating.comment}")
                 print(f"Helpful: {rating.clarity_rating}/5")
         """
-        variables = {"rid": rating_id}
+        variables = {"rid": _encode_id(rating_id)}
         response = self._execute_query(RATINGPAGE_QUERY, variables)
 
         rating_node = response.get("rating")

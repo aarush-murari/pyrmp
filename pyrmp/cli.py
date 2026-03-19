@@ -40,7 +40,12 @@ def cmd_search(args: argparse.Namespace) -> None:
             print(f"{i}. {teacher.full_name}")
             print(f"   School: {teacher.school.name if teacher.school else 'N/A'}")
             print(f"   Department: {teacher.department or 'N/A'}")
-            print(f"   Rating: {teacher.avg_rating}/5 ({teacher.num_ratings} ratings)")
+            if teacher.avg_rating is not None and teacher.num_ratings is not None:
+                print(
+                    f"   Rating: {teacher.avg_rating}/5 ({teacher.num_ratings} ratings)"
+                )
+            else:
+                print(f"   Rating: N/A")
             print()
 
 
@@ -59,13 +64,21 @@ def cmd_teacher(args: argparse.Namespace) -> None:
             return
 
         teacher = results.items[0]
+
+        # Get full details
+        details = client.get_teacher_details(teacher.id)
+        if details:
+            teacher = details
+
         print(f"Teacher: {teacher.full_name}")
         print(f"School: {teacher.school.name if teacher.school else 'N/A'}")
         print(f"Department: {teacher.department or 'N/A'}")
-        print(f"Rating: {teacher.avg_rating}/5")
-        print(f"Total Ratings: {teacher.num_ratings}")
-        print(f"Would Take Again: {teacher.would_take_again_percent}%")
-        print(f"Difficulty: {teacher.avg_difficulty}/5")
+        print(f"Rating: {teacher.avg_rating or 'N/A'}/5")
+        print(f"Total Ratings: {teacher.num_ratings or 'N/A'}")
+        print(
+            f"Would Take Again: {teacher.would_take_again_percent if teacher.would_take_again_percent is not None else 'N/A'}%"
+        )
+        print(f"Difficulty: {teacher.avg_difficulty or 'N/A'}/5")
         print(
             f"Course Codes: {', '.join(teacher.course_codes) if teacher.course_codes else 'N/A'}"
         )
@@ -89,16 +102,18 @@ def cmd_ratings(args: argparse.Namespace) -> None:
         print(f"Found {len(results.items)} ratings:\n")
         for rating in results.items:
             print(
-                f"Rating: {rating.clarity_rating}/5 | Difficulty: {rating.difficulty_rating}/5"
+                f"Rating: {rating.clarity_rating or 'N/A'}/5 | Difficulty: {rating.difficulty_rating or 'N/A'}/5"
             )
-            print(f"Class: {rating.class_name} | Grade: {rating.grade}")
-            print(f"Date: {rating.date}")
+            print(
+                f"Class: {rating.class_name or 'N/A'} | Grade: {rating.grade or 'N/A'}"
+            )
+            print(f"Date: {rating.date or 'N/A'}")
             comment = (
                 rating.comment[:100] + "..."
                 if rating.comment and len(rating.comment) > 100
-                else rating.comment
+                else rating.comment or "No comment"
             )
-            print(f"Comment: {comment or 'No comment'}")
+            print(f"Comment: {comment}")
             print()
 
 

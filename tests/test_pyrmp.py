@@ -416,10 +416,10 @@ class TestGetTeacherDetails:
         }
 
         client = RateMyProfessorClient()
-        teacher = client.get_teacher_details("VGVhY2hlci0xMjM=")
+        teacher = client.get_teacher_details("Teacher-123")
 
         assert teacher is not None
-        assert teacher.id == "VGVhY2hlci0xMjM="
+        assert teacher.id == "Teacher-123"
         assert teacher.legacy_id == 123
         assert teacher.first_name == "John"
         assert teacher.last_name == "Smith"
