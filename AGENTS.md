@@ -1,174 +1,84 @@
 # AGENTS.md
 
-Quick reference for developers and AI agents working on pyrmp.
+## Setup commands
+- Install deps: `uv sync --dev`
+- Activate venv: `source .venv/bin/activate`
+- Run all tests: `uv run pytest tests/`
+- Run unit tests only: `uv run pytest tests/test_pyrmp.py tests/test_client_extended.py tests/test_cli.py`
+- Run integration tests: `uv run pytest tests/test_integration.py`
+- Run single test: `uv run pytest tests/test_pyrmp.py::TestModels::test_teacher_full_name_both -v`
 
-## What is this?
+## Code style
+- Python 3.10+ (type hints required)
+- Google-style docstrings (user-focused, not implementation-focused)
+- Use dataclasses for models
+- No comments unless asked
+- Tests first, then implementation
 
-**pyrmp** is a Python wrapper for the RateMyProfessor GraphQL API. It lets you search for teachers, schools, and read ratings programmatically.
-
-- **PyPI**: `pip install pyrmp`
-- **GitHub**: `aarush-murari/pyrmp`
-- **Docs**: https://aarush-murari.github.io/pyrmp/
-
-## Project Structure
+## Project overview
+Python wrapper for the RateMyProfessor GraphQL API. READ-ONLY by design.
 
 ```
 pyrmp/
-├── pyrmp/                    # Main library
-│   ├── __init__.py          # Package exports
-│   ├── client.py            # RateMyProfessorClient (GraphQL)
+├── pyrmp/                    # Library code
+│   ├── client.py            # RateMyProfessorClient (main API)
 │   ├── models.py            # Teacher, School, Rating, PaginatedResult
-│   ├── queries.py           # GraphQL query strings
+│   ├── queries.py           # Imports from graphql_queries/
 │   ├── exceptions.py        # Custom exceptions
-│   └── cli.py               # CLI interface (argparse)
+│   └── cli.py               # CLI interface
 ├── tests/                   # Test suite
-│   ├── test_pyrmp.py        # Unit tests
+│   ├── test_pyrmp.py        # Unit tests (mocks)
 │   ├── test_client_extended.py  # Extended tests
 │   ├── test_integration.py  # Real API tests
 │   └── test_cli.py          # CLI tests
 ├── docs/                    # Sphinx documentation
-│   ├── source/              # Source files
-│   └── build/               # Built HTML (gitignored)
-├── .github/workflows/       # GitHub Actions
-│   ├── docs.yml             # Deploy docs to gh-pages
-│   └── release.yml          # Publish to PyPI on release
-├── pyproject.toml           # Package config + dependencies
-├── uv.lock                  # Dependency lock file
-└── README.md                # Quick start guide
+│   ├── source/conf.py       # Sphinx config
+│   └── build/html/          # Built HTML (gitignored)
+├── graphql_queries/         # Raw GraphQL queries (gitignored, dev only)
+├── .github/workflows/       # CI/CD
+│   ├── docs.yml             # Deploy docs on push to main
+│   └── release.yml          # Publish to PyPI on GitHub release
+├── pyproject.toml           # Package config
+└── uv.lock                  # Dependency lock
 ```
 
-## Development Setup
+## Dev environment tips
+- Always use `uv run` prefix for commands (ensures venv)
+- `graphql_queries/` is gitignored - contains raw queries extracted from RMP website, dev reference only
+- Do NOT commit `graphql_queries/`, `queries.txt`, `rmp_cookies_sample.json`, `dist/`, `docs/build/`
+- IDs returned by API are base64-encoded (e.g., `VGVhY2hlci05NDExNzQ=`). Library decodes to human-readable format (`Teacher-941174`) before returning to user.
+- When adding dependencies: `uv add package-name` (dev: `uv add package-name --dev`)
+- When testing: use `uv run pytest` not `pytest` directly
 
-### Prerequisites
-- Python 3.10+
-- uv (package manager)
+## Testing instructions
+- All tests must pass before committing
+- Mock tests (test_pyrmp.py, test_client_extended.py, test_cli.py) are fast - run these often
+- Integration tests (test_integration.py) hit real API - slower, may timeout
+- When adding new methods: add mock tests, then integration tests
+- Test edge cases: empty strings, None values, boundary values, special characters
+- Test both positive and negative inputs
 
-### Install dependencies
+## Key decisions
+- GraphQL queries imported from `graphql_queries/` (gitignored). Mutations excluded intentionally.
+- `include_compare=True` by default (returns ratings in search results)
+- Human-readable IDs (`Teacher-941174`) instead of base64 (`VGVhY2hlci05NDExNzQ=`)
+- No write operations in this library (separate pyrmp-write package)
+- Sphinx for docs, auto-deploys to GitHub Pages
+
+## PR instructions
+- Run `uv run pytest tests/` before committing
+- Run `uv run make html` in docs/ if docstrings changed
+- Bump version in `pyproject.toml` and `docs/source/conf.py` before release
+- Create GitHub release with tag `vX.Y.Z` to auto-publish to PyPI
+
+## Build and publish
 ```bash
-uv sync --dev
+# Build
+rm -rf dist/* && uv build
+
+# Manual publish (need token)
+UV_PUBLISH_TOKEN="pypi-token" uv publish
+
+# Auto publish (trusted publishing via GitHub release)
+# Just create release on GitHub with tag vX.Y.Z
 ```
-
-### Activate venv
-```bash
-source .venv/bin/activate
-```
-
-### Run tests
-```bash
-# All tests
-uv run pytest tests/
-
-# Unit tests only (fast)
-uv run pytest tests/test_pyrmp.py tests/test_client_extended.py
-
-# CLI tests
-uv run pytest tests/test_cli.py
-
-# Integration tests (hit real API, slower)
-uv run pytest tests/test_integration.py
-
-# Specific test
-uv run pytest tests/test_pyrmp.py::TestModels::test_teacher_full_name_both -v
-```
-
-### Add a dependency
-```bash
-# Production dependency
-uv add package-name
-
-# Dev dependency (testing, docs, etc.)
-uv add package-name --dev
-
-# After adding, uv.lock auto-updates
-```
-
-### Build package
-```bash
-rm -rf dist/*
-uv build
-```
-
-### Publish to PyPI
-```bash
-# Manual publish (need API token)
-UV_PUBLISH_TOKEN="pypi-your-token" uv publish
-
-# Auto publish via GitHub release
-# Just create a release on GitHub with tag vX.Y.Z
-# The release.yml workflow handles it via trusted publishing
-```
-
-## Version Bumping
-
-1. Edit `pyproject.toml` → `version = "X.Y.Z"`
-2. Edit `docs/source/conf.py` → `release = "X.Y.Z"`
-3. `uv sync`
-4. Commit and push
-5. Create GitHub release with tag `vX.Y.Z`
-
-## Documentation
-
-### Build docs locally
-```bash
-cd docs
-uv run make html
-# Output: docs/build/html/
-```
-
-### Docs deployment
-- Auto-deploys to GitHub Pages on push to main
-- URL: https://aarush-murari.github.io/pyrmp/
-
-## CLI Usage
-
-```bash
-# Search teachers
-pyrmp search "John Smith" --count 10
-
-# Teacher details
-pyrmp teacher "John Smith"
-
-# Teacher ratings
-pyrmp ratings "Teacher-941174"
-
-# Search schools
-pyrmp schools "MIT"
-
-# JSON output
-pyrmp search "John Smith" --json
-
-# Hide IDs
-pyrmp search "John Smith" --no-ids
-```
-
-## Key Decisions
-
-### Why `uv`?
-Fast dependency resolution and package management. Drop-in replacement for pip+virtualenv.
-
-### Why GraphQL?
-RMP API is GraphQL. We wrap it with Python dataclasses for clean API.
-
-### Why human-readable IDs?
-API returns base64-encoded IDs like `VGVhY2hlci05NDExNzQ=`. We decode to `Teacher-941174` for user-friendliness. Library handles encoding/decoding internally.
-
-### Why `include_compare=True`?
-Search returns ratings (avgRating, numRatings, difficulty) by default. Set to `False` for faster searches without rating data.
-
-### Why `graphql_queries/` is gitignored?
-Contains raw GraphQL queries extracted from RMP website. Not needed in the published package, only for development.
-
-## Common Pitfalls
-
-1. **Tests timeout**: Real API tests can timeout. Use `--timeout` or skip integration tests.
-2. **403 errors**: RMP blocks requests without proper headers. Our client adds User-Agent, Referer, etc.
-3. **SSH push fails**: Switch to HTTPS or check SSH key.
-4. **Version already exists**: Bump version in pyproject.toml before republishing.
-5. **Docstrings matter**: Sphinx auto-generates docs from docstrings. Keep them user-focused (not implementation details).
-
-## License
-
-MPL-2.0 (Mozilla Public License 2.0)
-- Modifications to this library must be shared
-- Static linking is allowed without restrictions
-- See LICENSE file for full text
