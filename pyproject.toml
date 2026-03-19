@@ -1,0 +1,57 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pyrmp"
+version = "0.1.0"
+description = "A Python wrapper for the RateMyProfessor GraphQL API"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Aarush", email = "aarush@example.com"}
+]
+keywords = ["ratemyprofessor", "api", "graphql", "education", "ratings"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+dependencies = [
+    "gql[all]>=3.0.0",
+    "requests>=2.28.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "pytest-cov>=4.0.0",
+]
+
+[project.scripts]
+pyrmp = "pyrmp.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/yourusername/pyrmp"
+Repository = "https://github.com/yourusername/pyrmp"
+Issues = "https://github.com/yourusername/pyrmp/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["pyrmp"]
+
+[tool.hatch.build.targets.sdist]
+include = ["pyrmp/**/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-v --tb=short"
