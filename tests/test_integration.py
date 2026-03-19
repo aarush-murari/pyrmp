@@ -466,7 +466,7 @@ class TestMockData:
 
         assert len(result.items) == 1
         teacher = result.items[0]
-        assert teacher.id == "VGVhY2hlci0xMjM="
+        assert teacher.id == "Teacher-123"
         assert teacher.first_name == "Test"
         assert teacher.last_name == "Professor"
         assert teacher.avg_rating == 4.5
@@ -504,7 +504,7 @@ class TestMockData:
 
         assert len(result.items) == 1
         school = result.items[0]
-        assert school.id == "U2Nob29sLTEyMw=="
+        assert school.id == "School-123"
         assert school.name == "Fake University"
         assert school.city == "Fake City"
 
@@ -551,11 +551,11 @@ class TestMockData:
         }
 
         client = RateMyProfessorClient()
-        result = client.get_teacher_ratings("VGVhY2hlci0xMjM=", count=10)
+        result = client.get_teacher_ratings("Teacher-123", count=10)
 
         assert len(result.items) == 1
         rating = result.items[0]
-        assert rating.id == "UmF0aW5nLTEyMw=="
+        assert rating.id == "Rating-123"
         assert rating.comment == "Great teacher!"
         assert rating.clarity_rating == 5.0
         assert rating.difficulty_rating == 3.0
@@ -602,11 +602,11 @@ class TestMockData:
         }
 
         client = RateMyProfessorClient()
-        result = client.get_school_ratings("U2Nob29sLTEyMw==", count=10)
+        result = client.get_school_ratings("School-123", count=10)
 
         assert len(result.items) == 1
         school_rating = result.items[0]
-        assert school_rating.id == "U2Nob29sUmF0aW5nLTEyMw=="
+        assert school_rating.id == "SchoolRating-123"
         assert school_rating.comment == "Great campus!"
         assert school_rating.facilities_rating == 5.0
         assert school_rating.safety_rating == 4.0

@@ -367,13 +367,15 @@ class RateMyProfessorClient:
         """
         Search for teachers by name.
 
-        This is the main way to find professors. The search is fuzzy - you don't
-        need to spell the name exactly.
+        The search is fuzzy - you don't need to spell the name exactly.
 
         Args:
             query: Teacher name to search for (e.g., "John Smith", "Smith", "J. Smith").
             count: How many results to return (1-100). Defaults to 10.
-            include_compare: Include ratings data. Defaults to True.
+            include_compare: Whether to include ratings data in results. Defaults to True.
+
+                - True: Returns avg_rating, avg_difficulty, num_ratings, would_take_again_percent
+                - False: Returns only name, department, school
 
         Returns:
             PaginatedResult with Teacher objects in `.items`.
@@ -383,18 +385,18 @@ class RateMyProfessorClient:
 
         Example::
 
-            # Simple search
+            # With ratings (default)
             results = client.search_teachers("John Smith")
-            for teacher in results.items:
-                print(teacher.full_name, teacher.avg_rating)
+            teacher = results.items[0]
+            print(teacher.avg_rating)        # 4.5
+            print(teacher.num_ratings)       # 100
+            print(teacher.avg_difficulty)    # 2.1
 
-            # Get more results
-            results = client.search_teachers("Smith", count=50)
-
-            # Paginate
-            if results.has_next_page:
-                # next_page = client.search_teachers("Smith", count=50)
-                pass
+            # Without ratings (faster, less data)
+            results = client.search_teachers("John Smith", include_compare=False)
+            teacher = results.items[0]
+            print(teacher.full_name)         # "John Smith"
+            print(teacher.avg_rating)        # None
         """
         if count < 1 or count > 100:
             raise InvalidQueryError(f"count must be between 1 and 100, got {count}")
