@@ -205,3 +205,8 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Local reference files (not for GitHub)
+graphql_queries/
+queries.txt
+rmp_cookies_sample.json

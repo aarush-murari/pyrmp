@@ -1,56 +1,26 @@
 """
-GraphQL queries for RateMyProfessor API
+GraphQL queries for RateMyProfessor API.
+
+This module imports read-only queries from the local graphql_queries package.
+Mutations are intentionally excluded to keep this package read-only.
 """
 
-# Import all queries from the existing queries file
-from helpful_files_and_docs.graphql_queries.rmp_queries import (
-    # Teacher queries
+from graphql_queries.rmp_queries import (
     NEWSEARCHTEACHERS_QUERY,
-    TEACHERRATINGSPAGE_QUERY,
-    RATINGSLIST_QUERY,
-    RATETEACHER_QUERY,
-    RATETEACHEREDIT_QUERY,
-    TEACHERSEARCHPAGINATION_QUERY,
-    TEACHERSEARCHRESULTSPAGE_QUERY,
-    # School queries
     NEWSEARCHSCHOOLS_QUERY,
+    TEACHERRATINGSPAGE_QUERY,
     SCHOOLRATINGSPAGE_QUERY,
+    RATINGSLIST_QUERY,
     SCHOOLRATINGSLIST_QUERY,
-    SCHOOLSEARCHPAGINATION_QUERY,
-    SCHOOLSEARCHRESULTSPAGE_QUERY,
-    # Rating queries
     RATINGPAGE_QUERY,
-    # User queries
-    MYRATINGSLIST_QUERY,
-    SAVEDPROFESSORSLIST_QUERY,
-    USERACCOUNTSETTINGSPAGE_QUERY,
-    # Utility queries
-    GLOBALCONTEXTPROVIDER_QUERY,
-    OAUTHBUTTONURL_QUERY,
 )
 
 __all__ = [
-    # Teacher queries
     "NEWSEARCHTEACHERS_QUERY",
-    "TEACHERRATINGSPAGE_QUERY",
-    "RATINGSLIST_QUERY",
-    "RATETEACHER_QUERY",
-    "RATETEACHEREDIT_QUERY",
-    "TEACHERSEARCHPAGINATION_QUERY",
-    "TEACHERSEARCHRESULTSPAGE_QUERY",
-    # School queries
     "NEWSEARCHSCHOOLS_QUERY",
+    "TEACHERRATINGSPAGE_QUERY",
     "SCHOOLRATINGSPAGE_QUERY",
+    "RATINGSLIST_QUERY",
     "SCHOOLRATINGSLIST_QUERY",
-    "SCHOOLSEARCHPAGINATION_QUERY",
-    "SCHOOLSEARCHRESULTSPAGE_QUERY",
-    # Rating queries
     "RATINGPAGE_QUERY",
-    # User queries
-    "MYRATINGSLIST_QUERY",
-    "SAVEDPROFESSORSLIST_QUERY",
-    "USERACCOUNTSETTINGSPAGE_QUERY",
-    # Utility queries
-    "GLOBALCONTEXTPROVIDER_QUERY",
-    "OAUTHBUTTONURL_QUERY",
 ]
