@@ -8,6 +8,12 @@ Python wrapper for the RateMyProfessor GraphQL API.
 pip install pyrmp
 ```
 
+Or install directly from GitHub:
+
+```bash
+pip install git+https://github.com/aarush-murari/pyrmp.git
+```
+
 ## Quick Start
 
 ```python
