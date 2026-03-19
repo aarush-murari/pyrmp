@@ -1,5 +1,5 @@
 """
-CLI interface for pyrmp - A Python wrapper for RateMyProfessor API.
+CLI interface for pyrmp.
 
 Usage:
     pyrmp search <query>
@@ -23,10 +23,10 @@ from pyrmp.models import PaginatedResult
 
 def cmd_search(args: argparse.Namespace) -> None:
     """
-    Search for teachers by name.
+    Search for teachers by name and display results.
 
     Args:
-        args: Command-line arguments containing 'query' and optional 'school'
+        args: Command-line arguments containing 'query'.
     """
     with RateMyProfessorClient() as client:
         results = client.search_teachers(args.query)
@@ -49,7 +49,7 @@ def cmd_teacher(args: argparse.Namespace) -> None:
     Get detailed info about a specific teacher.
 
     Args:
-        args: Command-line arguments containing 'school' and 'name'
+        args: Command-line arguments containing 'school' and 'name'.
     """
     with RateMyProfessorClient() as client:
         results = client.search_teachers(args.name)
@@ -77,7 +77,7 @@ def cmd_ratings(args: argparse.Namespace) -> None:
     Get ratings for a specific teacher.
 
     Args:
-        args: Command-line arguments containing 'teacher_id'
+        args: Command-line arguments containing 'teacher_id'.
     """
     with RateMyProfessorClient() as client:
         results = client.get_teacher_ratings(args.teacher_id)
@@ -104,10 +104,10 @@ def cmd_ratings(args: argparse.Namespace) -> None:
 
 def cmd_schools(args: argparse.Namespace) -> None:
     """
-    Search for schools.
+    Search for schools and display results.
 
     Args:
-        args: Command-line arguments containing 'query'
+        args: Command-line arguments containing 'query'.
     """
     with RateMyProfessorClient() as client:
         results = client.search_schools(args.query)
@@ -138,7 +138,6 @@ def main() -> None:
 
     subparsers = parser.add_subparsers(dest="command", help="Available commands")
 
-    # Search command
     search_parser = subparsers.add_parser(
         "search",
         help="Search for teachers by name",
@@ -152,7 +151,6 @@ def main() -> None:
     )
     search_parser.set_defaults(func=cmd_search)
 
-    # Teacher command
     teacher_parser = subparsers.add_parser(
         "teacher",
         help="Get teacher details",
@@ -162,7 +160,6 @@ def main() -> None:
     teacher_parser.add_argument("name", help="Teacher name")
     teacher_parser.set_defaults(func=cmd_teacher)
 
-    # Ratings command
     ratings_parser = subparsers.add_parser(
         "ratings",
         help="Get teacher ratings",
@@ -173,7 +170,6 @@ def main() -> None:
     )
     ratings_parser.set_defaults(func=cmd_ratings)
 
-    # Schools command
     schools_parser = subparsers.add_parser(
         "schools",
         help="Search for schools",

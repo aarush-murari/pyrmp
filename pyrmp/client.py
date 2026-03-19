@@ -1,11 +1,32 @@
 """
-RateMyProfessor GraphQL API Client (READ-ONLY)
+RateMyProfessor GraphQL API Client (READ-ONLY).
 
 A robust, defensive wrapper around the RateMyProfessor GraphQL API.
 This package provides READ-ONLY access to protect the RMP API.
 
-⚠️ NOTE: This is intentionally read-only. For write operations,
-see the separate pyrmp-write package.
+Example usage:
+    from pyrmp import RateMyProfessorClient
+
+    client = RateMyProfessorClient()
+
+    # Search for teachers
+    teachers = client.search_teachers("Smith", count=10)
+    for teacher in teachers.items:
+        print(f"{teacher.full_name} - {teacher.avg_rating}/5")
+
+    # Get teacher details
+    details = client.get_teacher_details(teacher.id)
+    print(f"Department: {details.department}")
+
+    client.close()
+
+For quick one-off searches, you can also use the module-level functions:
+    from pyrmp import search_teachers, search_schools
+
+    results = search_teachers("John Smith")
+
+NOTE: This is intentionally read-only to protect the RMP API from abuse.
+For write operations, use a separate authenticated client.
 """
 
 from typing import Optional, List, Dict, Any, Union
@@ -33,6 +54,16 @@ class RateMyProfessorClient:
 
     This client only supports read operations (search, get details, get ratings).
     Write operations are available in a separate package to protect the RMP API.
+
+    Attributes:
+        base_url: The GraphQL API endpoint URL.
+        timeout: Request timeout in seconds.
+
+    Example:
+        with RateMyProfessorClient() as client:
+            teachers = client.search_teachers("John Smith")
+            for teacher in teachers.items:
+                print(teacher.full_name, teacher.avg_rating)
     """
 
     _last_request_time = 0
@@ -44,6 +75,13 @@ class RateMyProfessorClient:
         base_url: str = "https://www.ratemyprofessors.com/graphql",
         timeout: int = 30,
     ):
+        """
+        Initialize a new RateMyProfessor API client.
+
+        Args:
+            base_url: The GraphQL API endpoint. Defaults to the official RMP endpoint.
+            timeout: Request timeout in seconds. Defaults to 30.
+        """
         self.base_url = base_url
         self.timeout = timeout
 
@@ -59,11 +97,26 @@ class RateMyProfessorClient:
                 "Referer": "https://www.ratemyprofessors.com/",
             },
         )
-        self.client = Client(transport=self.transport, fetch_schema_from_transport=False)
+        self.client = Client(
+            transport=self.transport, fetch_schema_from_transport=False
+        )
 
     def _execute_query(
         self, query: str, variable_values: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
+        """
+        Execute a GraphQL query with rate limiting and error handling.
+
+        Args:
+            query: The GraphQL query string.
+            variable_values: Optional variables for the query.
+
+        Returns:
+            The data portion of the GraphQL response.
+
+        Raises:
+            RateMyProfessorError: If the client is closed or query fails.
+        """
         if self._is_closed:
             raise RateMyProfessorError("Client is closed. Create a new client.")
 
@@ -75,7 +128,9 @@ class RateMyProfessorClient:
         RateMyProfessorClient._last_request_time = time.time()
 
         try:
-            result = self.client.execute(gql(query), variable_values=variable_values or {})
+            result = self.client.execute(
+                gql(query), variable_values=variable_values or {}
+            )
             return result
         except Exception as e:
             error_msg = str(e)
@@ -89,6 +144,15 @@ class RateMyProfessorClient:
                 raise RateMyProfessorError(f"GraphQL query failed: {error_msg}")
 
     def _parse_teacher_node(self, teacher_node: Dict[str, Any]) -> Teacher:
+        """
+        Parse a teacher node from the GraphQL response into a Teacher object.
+
+        Args:
+            teacher_node: Raw teacher data from the API.
+
+        Returns:
+            A Teacher dataclass instance.
+        """
         if not teacher_node:
             return Teacher(id="")
 
@@ -120,12 +184,23 @@ class RateMyProfessorClient:
             num_ratings=teacher_node.get("numRatings"),
             would_take_again_percent=teacher_node.get("wouldTakeAgainPercentRounded"),
             ratings_distribution=teacher_node.get("ratingsDistribution"),
-            course_codes=[code.get("courseName") for code in teacher_node.get("courseCodes", [])],
+            course_codes=[
+                code.get("courseName") for code in teacher_node.get("courseCodes", [])
+            ],
             lock_status=teacher_node.get("lockStatus"),
             is_saved=teacher_node.get("isSaved"),
         )
 
     def _parse_school_node(self, school_node: Dict[str, Any]) -> School:
+        """
+        Parse a school node from the GraphQL response into a School object.
+
+        Args:
+            school_node: Raw school data from the API.
+
+        Returns:
+            A School dataclass instance.
+        """
         if not school_node:
             return School(id="")
 
@@ -146,6 +221,16 @@ class RateMyProfessorClient:
     def _parse_rating_node(
         self, rating_node: Dict[str, Any], teacher: Optional[Teacher] = None
     ) -> Rating:
+        """
+        Parse a rating node from the GraphQL response into a Rating object.
+
+        Args:
+            rating_node: Raw rating data from the API.
+            teacher: Optional associated Teacher object.
+
+        Returns:
+            A Rating dataclass instance.
+        """
         if not rating_node:
             return Rating(id="")
 
@@ -175,6 +260,16 @@ class RateMyProfessorClient:
     def _parse_school_rating_node(
         self, rating_node: Dict[str, Any], school: Optional[School] = None
     ) -> SchoolRating:
+        """
+        Parse a school rating node from the GraphQL response into a SchoolRating object.
+
+        Args:
+            rating_node: Raw school rating data from the API.
+            school: Optional associated School object.
+
+        Returns:
+            A SchoolRating dataclass instance.
+        """
         if not rating_node:
             return SchoolRating(id="")
 
@@ -203,6 +298,20 @@ class RateMyProfessorClient:
     def search_teachers(
         self, query: str, count: int = 10, include_compare: bool = False
     ) -> PaginatedResult:
+        """
+        Search for teachers by name.
+
+        Args:
+            query: The search query (teacher name).
+            count: Number of results to return (1-100). Defaults to 10.
+            include_compare: Whether to include comparison data. Defaults to False.
+
+        Returns:
+            A PaginatedResult containing Teacher objects.
+
+        Raises:
+            InvalidQueryError: If count is outside the valid range.
+        """
         if count < 1 or count > 100:
             raise InvalidQueryError(f"count must be between 1 and 100, got {count}")
 
@@ -237,6 +346,20 @@ class RateMyProfessorClient:
         count: int = 10,
         include_compare: bool = False,
     ) -> PaginatedResult:
+        """
+        Search for schools by name.
+
+        Args:
+            query: The search query (school name). Optional.
+            count: Number of results to return (1-100). Defaults to 10.
+            include_compare: Whether to include comparison data. Defaults to False.
+
+        Returns:
+            A PaginatedResult containing School objects.
+
+        Raises:
+            InvalidQueryError: If count is outside the valid range.
+        """
         if count < 1 or count > 100:
             raise InvalidQueryError(f"count must be between 1 and 100, got {count}")
 
@@ -262,6 +385,15 @@ class RateMyProfessorClient:
         )
 
     def get_teacher_details(self, teacher_id: str) -> Optional[Teacher]:
+        """
+        Get detailed information about a specific teacher.
+
+        Args:
+            teacher_id: The teacher's GraphQL node ID (e.g., "VGVhY2hlci0zMTI1Nzg0").
+
+        Returns:
+            A Teacher object if found, None otherwise.
+        """
         variables = {"id": teacher_id}
         response = self._execute_query(TEACHERRATINGSPAGE_QUERY, variables)
 
@@ -271,6 +403,15 @@ class RateMyProfessorClient:
         return None
 
     def get_school_details(self, school_id: str) -> Optional[School]:
+        """
+        Get detailed information about a specific school.
+
+        Args:
+            school_id: The school's GraphQL node ID.
+
+        Returns:
+            A School object if found, None otherwise.
+        """
         variables = {"id": school_id}
         response = self._execute_query(SCHOOLRATINGSPAGE_QUERY, variables)
 
@@ -286,6 +427,18 @@ class RateMyProfessorClient:
         course_filter: Optional[str] = None,
         cursor: Optional[str] = None,
     ) -> PaginatedResult:
+        """
+        Get ratings for a specific teacher with pagination support.
+
+        Args:
+            teacher_id: The teacher's GraphQL node ID.
+            count: Number of ratings to fetch per page (1-100). Defaults to 20.
+            course_filter: Optional course name to filter ratings by.
+            cursor: Pagination cursor from a previous response.
+
+        Returns:
+            A PaginatedResult containing Rating objects.
+        """
         variables = {
             "count": count,
             "id": teacher_id,
@@ -318,6 +471,17 @@ class RateMyProfessorClient:
     def get_school_ratings(
         self, school_id: str, count: int = 20, cursor: Optional[str] = None
     ) -> PaginatedResult:
+        """
+        Get ratings for a specific school with pagination support.
+
+        Args:
+            school_id: The school's GraphQL node ID.
+            count: Number of ratings to fetch per page (1-100). Defaults to 20.
+            cursor: Pagination cursor from a previous response.
+
+        Returns:
+            A PaginatedResult containing SchoolRating objects.
+        """
         variables = {"count": count, "id": school_id, "cursor": cursor}
 
         response = self._execute_query(SCHOOLRATINGSLIST_QUERY, variables)
@@ -334,7 +498,9 @@ class RateMyProfessorClient:
             for edge in ratings_data["edges"]:
                 rating_node = edge.get("node")
                 if rating_node:
-                    school_ratings.append(self._parse_school_rating_node(rating_node, school))
+                    school_ratings.append(
+                        self._parse_school_rating_node(rating_node, school)
+                    )
 
         return PaginatedResult(
             items=school_ratings,
@@ -342,7 +508,18 @@ class RateMyProfessorClient:
             end_cursor=ratings_data.get("pageInfo", {}).get("endCursor"),
         )
 
-    def get_rating_details(self, rating_id: str) -> Optional[Union[Rating, SchoolRating]]:
+    def get_rating_details(
+        self, rating_id: str
+    ) -> Optional[Union[Rating, SchoolRating]]:
+        """
+        Get details for a specific rating.
+
+        Args:
+            rating_id: The rating's GraphQL node ID.
+
+        Returns:
+            A Rating or SchoolRating object if found, None otherwise.
+        """
         variables = {"rid": rating_id}
         response = self._execute_query(RATINGPAGE_QUERY, variables)
 
@@ -362,6 +539,11 @@ class RateMyProfessorClient:
         return None
 
     def close(self):
+        """
+        Close the client and release resources.
+
+        This method is idempotent - calling it multiple times is safe.
+        """
         if not self._is_closed:
             self._is_closed = True
             if hasattr(self.transport, "close"):
@@ -371,19 +553,45 @@ class RateMyProfessorClient:
                     pass
 
     def __enter__(self):
+        """Support context manager protocol."""
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        """Support context manager protocol."""
         self.close()
 
 
 def search_teachers(query: str, count: int = 10) -> PaginatedResult:
-    """Quick search for teachers"""
+    """
+    Quick search for teachers by name.
+
+    This is a convenience function that creates a temporary client,
+    performs the search, and closes the client.
+
+    Args:
+        query: The search query (teacher name).
+        count: Number of results to return (1-100). Defaults to 10.
+
+    Returns:
+        A PaginatedResult containing Teacher objects.
+    """
     with RateMyProfessorClient() as client:
         return client.search_teachers(query, count)
 
 
 def search_schools(query: Optional[str] = None, count: int = 10) -> PaginatedResult:
-    """Quick search for schools"""
+    """
+    Quick search for schools by name.
+
+    This is a convenience function that creates a temporary client,
+    performs the search, and closes the client.
+
+    Args:
+        query: The search query (school name). Optional.
+        count: Number of results to return (1-100). Defaults to 10.
+
+    Returns:
+        A PaginatedResult containing School objects.
+    """
     with RateMyProfessorClient() as client:
         return client.search_schools(query, count)
