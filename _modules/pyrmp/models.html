@@ -1,0 +1,504 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pyrmp.models &mdash; pyrmp 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=92734c54"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pyrmp
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pyrmp</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pyrmp.models</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pyrmp.models</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Data models for pyrmp.</span>
+
+<span class="sd">These are the objects you&#39;ll be working with when searching for teachers,</span>
+<span class="sd">schools, or ratings. Each model wraps the data returned by the RateMyProfessor</span>
+<span class="sd">API in a Python dataclass.</span>
+
+<span class="sd">Typical usage::</span>
+
+<span class="sd">    from pyrmp import RateMyProfessorClient</span>
+
+<span class="sd">    client = RateMyProfessorClient()</span>
+<span class="sd">    teachers = client.search_teachers(&quot;John Smith&quot;, count=10)</span>
+
+<span class="sd">    for teacher in teachers.items:  # Teacher objects</span>
+<span class="sd">        print(teacher.full_name, teacher.avg_rating)</span>
+<span class="sd">        if teacher.school:</span>
+<span class="sd">            print(teacher.school.name)  # School object</span>
+
+<span class="sd">    ratings = client.get_teacher_ratings(teacher.id, count=5)</span>
+<span class="sd">    for rating in ratings.items:  # Rating objects</span>
+<span class="sd">        print(rating.comment, rating.clarity_rating)</span>
+
+<span class="sd">    client.close()</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+
+<div class="viewcode-block" id="School">
+<a class="viewcode-back" href="../../api.html#pyrmp.models.School">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">School</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A school or university on RateMyProfessor.</span>
+
+<span class="sd">    You&#39;ll get School objects when searching for schools or when a teacher</span>
+<span class="sd">    is associated with a school.</span>
+
+<span class="sd">    Usage::</span>
+
+<span class="sd">        school = client.get_school_details(&quot;VGVhY2hlci0xMjM=&quot;)</span>
+<span class="sd">        print(school.name)      # &quot;Stanford University&quot;</span>
+<span class="sd">        print(school.num_ratings)  # 5000</span>
+<span class="sd">        print(school.avg_rating)   # 4.2</span>
+
+<span class="sd">        # When searching</span>
+<span class="sd">        results = client.search_schools(&quot;MIT&quot;)</span>
+<span class="sd">        for school in results.items:</span>
+<span class="sd">            print(school.name, school.city, school.state)</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        id: Unique identifier for this school (used in API calls).</span>
+<span class="sd">        legacy_id: Original numeric ID from older RMP system.</span>
+<span class="sd">        name: Full school name (e.g., &quot;Stanford University&quot;).</span>
+<span class="sd">        city: City where the school is located.</span>
+<span class="sd">        state: State abbreviation (e.g., &quot;CA&quot;).</span>
+<span class="sd">        country: Country of the school.</span>
+<span class="sd">        num_ratings: Total number of ratings this school has received.</span>
+<span class="sd">        avg_rating: Average overall school rating (0.0-5.0).</span>
+<span class="sd">        avg_rating_rounded: Average rating rounded to nearest 0.5.</span>
+<span class="sd">        departments: List of departments at the school.</span>
+<span class="sd">        summary: Detailed ratings for various school aspects.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">legacy_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">city</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">state</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">country</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">num_ratings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">avg_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">avg_rating_rounded</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">departments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">summary</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+        <span class="n">location_parts</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">city</span><span class="p">:</span>
+            <span class="n">location_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">city</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">:</span>
+            <span class="n">location_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">location_parts</span><span class="p">:</span>
+            <span class="n">parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;(</span><span class="si">{</span><span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">location_parts</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span> <span class="k">if</span> <span class="n">parts</span> <span class="k">else</span> <span class="s2">&quot;School&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;School </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&gt;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="Teacher">
+<a class="viewcode-back" href="../../api.html#pyrmp.models.Teacher">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Teacher</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A teacher/professor on RateMyProfessor.</span>
+
+<span class="sd">    This is the main object you&#39;ll work with when searching for or</span>
+<span class="sd">    getting details about professors.</span>
+
+<span class="sd">    Usage::</span>
+
+<span class="sd">        # Search for teachers</span>
+<span class="sd">        results = client.search_teachers(&quot;John Smith&quot;)</span>
+<span class="sd">        teacher = results.items[0]</span>
+
+<span class="sd">        print(teacher.full_name)     # &quot;John Smith&quot;</span>
+<span class="sd">        print(teacher.avg_rating)    # 4.5</span>
+<span class="sd">        print(teacher.num_ratings)   # 100</span>
+<span class="sd">        print(teacher.department)    # &quot;Computer Science&quot;</span>
+
+<span class="sd">        # Teacher&#39;s school info</span>
+<span class="sd">        if teacher.school:</span>
+<span class="sd">            print(teacher.school.name)  # &quot;Stanford University&quot;</span>
+
+<span class="sd">        # Get more details</span>
+<span class="sd">        details = client.get_teacher_details(teacher.id)</span>
+<span class="sd">        print(details.would_take_again_percent)  # 80.0</span>
+<span class="sd">        print(details.avg_difficulty)            # 3.0</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        id: Unique identifier for this teacher (used in API calls).</span>
+<span class="sd">        legacy_id: Original numeric ID from older RMP system.</span>
+<span class="sd">        first_name: Teacher&#39;s first name.</span>
+<span class="sd">        last_name: Teacher&#39;s last name.</span>
+<span class="sd">        department: Department the teacher belongs to (e.g., &quot;Computer Science&quot;).</span>
+<span class="sd">        department_id: Numeric department identifier.</span>
+<span class="sd">        school: The school this teacher is associated with.</span>
+<span class="sd">        avg_rating: Average rating from students (0.0-5.0).</span>
+<span class="sd">        avg_difficulty: Average difficulty rating (0.0-5.0).</span>
+<span class="sd">        num_ratings: Total number of ratings received.</span>
+<span class="sd">        would_take_again_percent: Percentage of students who would take again.</span>
+<span class="sd">        ratings_distribution: Breakdown of rating distribution (dict with r1-r5).</span>
+<span class="sd">        course_codes: List of course codes taught by this teacher.</span>
+<span class="sd">        lock_status: Whether the professor&#39;s page is locked.</span>
+<span class="sd">        is_saved: Whether the professor is saved by the current user.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">legacy_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">first_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">last_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">department</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">department_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">school</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">School</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">avg_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">avg_difficulty</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">num_ratings</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">would_take_again_percent</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">ratings_distribution</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">course_codes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">lock_status</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">is_saved</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the teacher&#39;s full name.</span>
+
+<span class="sd">        Returns the first and last name combined, or None if either is missing.</span>
+<span class="sd">        Useful for display purposes.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            &quot;John Smith&quot; if both names exist, None otherwise.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            teacher = Teacher(id=&quot;1&quot;, first_name=&quot;John&quot;, last_name=&quot;Smith&quot;)</span>
+<span class="sd">            print(teacher.full_name)  # &quot;John Smith&quot;</span>
+
+<span class="sd">            teacher2 = Teacher(id=&quot;2&quot;, first_name=&quot;John&quot;)</span>
+<span class="sd">            print(teacher2.full_name)  # None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">first_name</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_name</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">first_name</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">last_name</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">full_name</span> <span class="ow">or</span> <span class="s2">&quot;Teacher&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Teacher </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">full_name</span><span class="w"> </span><span class="ow">or</span><span class="w"> </span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&gt;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="Rating">
+<a class="viewcode-back" href="../../api.html#pyrmp.models.Rating">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Rating</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An individual teacher rating/review from a student.</span>
+
+<span class="sd">    Ratings come from `client.get_teacher_ratings()` or</span>
+<span class="sd">    `client.get_rating_details()`.</span>
+
+<span class="sd">    Usage::</span>
+
+<span class="sd">        ratings = client.get_teacher_ratings(teacher_id, count=10)</span>
+
+<span class="sd">        for rating in ratings.items:</span>
+<span class="sd">            print(f&quot;Rating: {rating.clarity_rating}/5&quot;)</span>
+<span class="sd">            print(f&quot;Difficulty: {rating.difficulty_rating}/5&quot;)</span>
+<span class="sd">            print(f&quot;Grade: {rating.grade}&quot;)</span>
+<span class="sd">            print(f&quot;Class: {rating.class_name}&quot;)</span>
+<span class="sd">            print(f&quot;Comment: {rating.comment}&quot;)</span>
+<span class="sd">            print(f&quot;Would take again: {rating.would_take_again}&quot;)</span>
+<span class="sd">            print(f&quot;Helpful votes: {rating.thumbs_up_total}&quot;)</span>
+<span class="sd">            print(&quot;---&quot;)</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        id: Unique identifier for this rating.</span>
+<span class="sd">        legacy_id: Original numeric ID from older RMP system.</span>
+<span class="sd">        teacher: The teacher this rating is for (if available).</span>
+<span class="sd">        comment: The written review text from the student.</span>
+<span class="sd">        helpful_rating: Helpfulness rating (1-5, where 5 is most helpful).</span>
+<span class="sd">        clarity_rating: Clarity rating (1-5, where 5 is most clear).</span>
+<span class="sd">        difficulty_rating: Difficulty rating (1-5, where 5 is most difficult).</span>
+<span class="sd">        grade: Grade received in the class (e.g., &quot;A&quot;, &quot;B+&quot;, &quot;Pass&quot;).</span>
+<span class="sd">        class_name: Name of the class rated (e.g., &quot;CS101&quot;).</span>
+<span class="sd">        would_take_again: Whether the student would take the teacher again.</span>
+<span class="sd">        is_for_credit: Whether the class was taken for credit.</span>
+<span class="sd">        textbook_used: Whether a textbook was used in the class.</span>
+<span class="sd">        attendance_mandatory: Whether attendance was mandatory.</span>
+<span class="sd">        is_for_online_class: Whether this was for an online class.</span>
+<span class="sd">        rating_tags: List of tags describing the rating (e.g., [&quot;amazing lectures&quot;]).</span>
+<span class="sd">        thumbs_up_total: Number of &quot;helpful&quot; votes this rating received.</span>
+<span class="sd">        thumbs_down_total: Number of &quot;unhelpful&quot; votes this rating received.</span>
+<span class="sd">        date: Date the rating was posted (string or datetime).</span>
+<span class="sd">        flag_status: Whether the rating has been flagged for review.</span>
+<span class="sd">        created_by_user: Whether this rating was created by the current user.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">legacy_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">teacher</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Teacher</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">helpful_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">clarity_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">difficulty_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">grade</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">class_name</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">would_take_again</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">is_for_credit</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">textbook_used</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">attendance_mandatory</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">is_for_online_class</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">rating_tags</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">thumbs_up_total</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">thumbs_down_total</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">flag_status</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">created_by_user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">teacher</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Rating for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">teacher</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;Rating&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;Rating </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&gt;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="SchoolRating">
+<a class="viewcode-back" href="../../api.html#pyrmp.models.SchoolRating">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">SchoolRating</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A rating/review for an entire school (not a teacher).</span>
+
+<span class="sd">    School ratings come from `client.get_school_ratings()` or</span>
+<span class="sd">    `client.get_rating_details()`.</span>
+
+<span class="sd">    Usage::</span>
+
+<span class="sd">        ratings = client.get_school_ratings(school_id, count=10)</span>
+
+<span class="sd">        for rating in ratings.items:</span>
+<span class="sd">            print(f&quot;Facilities: {rating.facilities_rating}/5&quot;)</span>
+<span class="sd">            print(f&quot;Food: {rating.food_rating}/5&quot;)</span>
+<span class="sd">            print(f&quot;Social: {rating.social_rating}/5&quot;)</span>
+<span class="sd">            print(f&quot;Comment: {rating.comment}&quot;)</span>
+<span class="sd">            print(&quot;---&quot;)</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        id: Unique identifier for this school rating.</span>
+<span class="sd">        legacy_id: Original numeric ID from older RMP system.</span>
+<span class="sd">        school: The school this rating is for (if available).</span>
+<span class="sd">        comment: The written review text from the student.</span>
+<span class="sd">        clubs_rating: Rating for clubs and activities (1-5).</span>
+<span class="sd">        facilities_rating: Rating for facilities (1-5).</span>
+<span class="sd">        food_rating: Rating for food quality (1-5).</span>
+<span class="sd">        happiness_rating: Overall happiness rating (1-5).</span>
+<span class="sd">        internet_rating: Rating for internet speed (1-5).</span>
+<span class="sd">        location_rating: Rating for campus location (1-5).</span>
+<span class="sd">        opportunities_rating: Rating for opportunities (1-5).</span>
+<span class="sd">        reputation_rating: Rating for school reputation (1-5).</span>
+<span class="sd">        safety_rating: Rating for campus safety (1-5).</span>
+<span class="sd">        social_rating: Rating for social activities (1-5).</span>
+<span class="sd">        date: Date the rating was posted.</span>
+<span class="sd">        thumbs_up_total: Number of helpful votes.</span>
+<span class="sd">        thumbs_down_total: Number of unhelpful votes.</span>
+<span class="sd">        flag_status: Whether the rating has been flagged.</span>
+<span class="sd">        created_by_user: Whether this was created by the current user.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">legacy_id</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">school</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">School</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">comment</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">clubs_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">facilities_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">food_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">happiness_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">internet_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">location_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">opportunities_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">reputation_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">safety_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">social_rating</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">date</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">thumbs_up_total</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">thumbs_down_total</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">flag_status</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">created_by_user</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">school</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;School Rating for </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">school</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;School Rating&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&lt;SchoolRating </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="si">}</span><span class="s2">&gt;&quot;</span></div>
+
+
+
+<div class="viewcode-block" id="PaginatedResult">
+<a class="viewcode-back" href="../../api.html#pyrmp.models.PaginatedResult">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">PaginatedResult</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A page of results from a search or listing operation.</span>
+
+<span class="sd">    All search and listing methods return this wrapper. Use `items` to access</span>
+<span class="sd">    the actual Teacher/School/Rating objects, and `has_next_page`/`end_cursor`</span>
+<span class="sd">    for pagination.</span>
+
+<span class="sd">    Usage::</span>
+
+<span class="sd">        # Get first page</span>
+<span class="sd">        results = client.search_teachers(&quot;Smith&quot;, count=10)</span>
+
+<span class="sd">        print(len(results))           # Number of items in this page</span>
+<span class="sd">        print(bool(results))          # True if any items</span>
+
+<span class="sd">        for teacher in results.items:</span>
+<span class="sd">            print(teacher.full_name)</span>
+
+<span class="sd">        # Get next page</span>
+<span class="sd">        if results.has_next_page:</span>
+<span class="sd">            next_page = client.search_teachers(&quot;Smith&quot;, count=10)</span>
+<span class="sd">            # ... handle next_page</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        items: List of items in the current page (Teacher, School, or Rating objects).</span>
+<span class="sd">        has_next_page: Whether there are more pages available after this one.</span>
+<span class="sd">        end_cursor: Cursor string to use for fetching the next page.</span>
+<span class="sd">        total_count: Total number of items across all pages (if available).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">items</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span>
+    <span class="n">has_next_page</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">end_cursor</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">total_count</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Number of items in the current page.</span>
+
+<span class="sd">        Usage::</span>
+
+<span class="sd">            results = client.search_teachers(&quot;Smith&quot;)</span>
+<span class="sd">            print(len(results))  # e.g., 10</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__bool__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;True if there are any items in the current page.</span>
+
+<span class="sd">        Usage::</span>
+
+<span class="sd">            results = client.search_teachers(&quot;nonexistent teacher&quot;)</span>
+<span class="sd">            if not results:</span>
+<span class="sd">                print(&quot;No teachers found&quot;)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Aarush Murari.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

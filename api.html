@@ -1,0 +1,1106 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; pyrmp 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=92734c54"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="pyrmp" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pyrmp
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#client">Client</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#models">Models</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#pyrmp.models.Teacher"><code class="docutils literal notranslate"><span class="pre">Teacher</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.id"><code class="docutils literal notranslate"><span class="pre">Teacher.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.legacy_id"><code class="docutils literal notranslate"><span class="pre">Teacher.legacy_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.first_name"><code class="docutils literal notranslate"><span class="pre">Teacher.first_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.last_name"><code class="docutils literal notranslate"><span class="pre">Teacher.last_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.department"><code class="docutils literal notranslate"><span class="pre">Teacher.department</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.department_id"><code class="docutils literal notranslate"><span class="pre">Teacher.department_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.school"><code class="docutils literal notranslate"><span class="pre">Teacher.school</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.avg_rating"><code class="docutils literal notranslate"><span class="pre">Teacher.avg_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.avg_difficulty"><code class="docutils literal notranslate"><span class="pre">Teacher.avg_difficulty</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.num_ratings"><code class="docutils literal notranslate"><span class="pre">Teacher.num_ratings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.would_take_again_percent"><code class="docutils literal notranslate"><span class="pre">Teacher.would_take_again_percent</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.ratings_distribution"><code class="docutils literal notranslate"><span class="pre">Teacher.ratings_distribution</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.course_codes"><code class="docutils literal notranslate"><span class="pre">Teacher.course_codes</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.lock_status"><code class="docutils literal notranslate"><span class="pre">Teacher.lock_status</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.is_saved"><code class="docutils literal notranslate"><span class="pre">Teacher.is_saved</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Teacher.full_name"><code class="docutils literal notranslate"><span class="pre">Teacher.full_name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyrmp.models.School"><code class="docutils literal notranslate"><span class="pre">School</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.School.id"><code class="docutils literal notranslate"><span class="pre">School.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.School.legacy_id"><code class="docutils literal notranslate"><span class="pre">School.legacy_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.School.name"><code class="docutils literal notranslate"><span class="pre">School.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.School.city"><code class="docutils literal notranslate"><span class="pre">School.city</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.School.state"><code class="docutils literal notranslate"><span class="pre">School.state</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.School.country"><code class="docutils literal notranslate"><span class="pre">School.country</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.School.num_ratings"><code class="docutils literal notranslate"><span class="pre">School.num_ratings</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.School.avg_rating"><code class="docutils literal notranslate"><span class="pre">School.avg_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.School.avg_rating_rounded"><code class="docutils literal notranslate"><span class="pre">School.avg_rating_rounded</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.School.departments"><code class="docutils literal notranslate"><span class="pre">School.departments</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.School.summary"><code class="docutils literal notranslate"><span class="pre">School.summary</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyrmp.models.Rating"><code class="docutils literal notranslate"><span class="pre">Rating</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.id"><code class="docutils literal notranslate"><span class="pre">Rating.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.legacy_id"><code class="docutils literal notranslate"><span class="pre">Rating.legacy_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.teacher"><code class="docutils literal notranslate"><span class="pre">Rating.teacher</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.comment"><code class="docutils literal notranslate"><span class="pre">Rating.comment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.helpful_rating"><code class="docutils literal notranslate"><span class="pre">Rating.helpful_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.clarity_rating"><code class="docutils literal notranslate"><span class="pre">Rating.clarity_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.difficulty_rating"><code class="docutils literal notranslate"><span class="pre">Rating.difficulty_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.grade"><code class="docutils literal notranslate"><span class="pre">Rating.grade</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.class_name"><code class="docutils literal notranslate"><span class="pre">Rating.class_name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.would_take_again"><code class="docutils literal notranslate"><span class="pre">Rating.would_take_again</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.is_for_credit"><code class="docutils literal notranslate"><span class="pre">Rating.is_for_credit</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.textbook_used"><code class="docutils literal notranslate"><span class="pre">Rating.textbook_used</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.attendance_mandatory"><code class="docutils literal notranslate"><span class="pre">Rating.attendance_mandatory</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.is_for_online_class"><code class="docutils literal notranslate"><span class="pre">Rating.is_for_online_class</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.rating_tags"><code class="docutils literal notranslate"><span class="pre">Rating.rating_tags</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.thumbs_up_total"><code class="docutils literal notranslate"><span class="pre">Rating.thumbs_up_total</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.thumbs_down_total"><code class="docutils literal notranslate"><span class="pre">Rating.thumbs_down_total</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.date"><code class="docutils literal notranslate"><span class="pre">Rating.date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.flag_status"><code class="docutils literal notranslate"><span class="pre">Rating.flag_status</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.Rating.created_by_user"><code class="docutils literal notranslate"><span class="pre">Rating.created_by_user</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyrmp.models.SchoolRating"><code class="docutils literal notranslate"><span class="pre">SchoolRating</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.id"><code class="docutils literal notranslate"><span class="pre">SchoolRating.id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.legacy_id"><code class="docutils literal notranslate"><span class="pre">SchoolRating.legacy_id</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.school"><code class="docutils literal notranslate"><span class="pre">SchoolRating.school</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.comment"><code class="docutils literal notranslate"><span class="pre">SchoolRating.comment</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.clubs_rating"><code class="docutils literal notranslate"><span class="pre">SchoolRating.clubs_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.facilities_rating"><code class="docutils literal notranslate"><span class="pre">SchoolRating.facilities_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.food_rating"><code class="docutils literal notranslate"><span class="pre">SchoolRating.food_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.happiness_rating"><code class="docutils literal notranslate"><span class="pre">SchoolRating.happiness_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.internet_rating"><code class="docutils literal notranslate"><span class="pre">SchoolRating.internet_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.location_rating"><code class="docutils literal notranslate"><span class="pre">SchoolRating.location_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.opportunities_rating"><code class="docutils literal notranslate"><span class="pre">SchoolRating.opportunities_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.reputation_rating"><code class="docutils literal notranslate"><span class="pre">SchoolRating.reputation_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.safety_rating"><code class="docutils literal notranslate"><span class="pre">SchoolRating.safety_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.social_rating"><code class="docutils literal notranslate"><span class="pre">SchoolRating.social_rating</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.date"><code class="docutils literal notranslate"><span class="pre">SchoolRating.date</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.thumbs_up_total"><code class="docutils literal notranslate"><span class="pre">SchoolRating.thumbs_up_total</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.thumbs_down_total"><code class="docutils literal notranslate"><span class="pre">SchoolRating.thumbs_down_total</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.flag_status"><code class="docutils literal notranslate"><span class="pre">SchoolRating.flag_status</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.SchoolRating.created_by_user"><code class="docutils literal notranslate"><span class="pre">SchoolRating.created_by_user</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#pyrmp.models.PaginatedResult"><code class="docutils literal notranslate"><span class="pre">PaginatedResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.PaginatedResult.items"><code class="docutils literal notranslate"><span class="pre">PaginatedResult.items</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.PaginatedResult.has_next_page"><code class="docutils literal notranslate"><span class="pre">PaginatedResult.has_next_page</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.PaginatedResult.end_cursor"><code class="docutils literal notranslate"><span class="pre">PaginatedResult.end_cursor</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#pyrmp.models.PaginatedResult.total_count"><code class="docutils literal notranslate"><span class="pre">PaginatedResult.total_count</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#exceptions">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cli">CLI</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pyrmp</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<section id="client">
+<h2>Client<a class="headerlink" href="#client" title="Link to this heading"></a></h2>
+</section>
+<section id="models">
+<h2>Models<a class="headerlink" href="#models" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrmp.models.</span></span><span class="sig-name descname"><span class="pre">Teacher</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">first_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">last_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">department</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">department_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">school</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrmp.models.School" title="pyrmp.models.School"><span class="pre">School</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_difficulty</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_ratings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">would_take_again_percent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ratings_distribution</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">course_codes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lock_status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_saved</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyrmp/models.html#Teacher"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrmp.models.Teacher" title="Link to this definition"></a></dt>
+<dd><p>A teacher/professor on RateMyProfessor.</p>
+<p>This is the main object you’ll work with when searching for or
+getting details about professors.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Search for teachers</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search_teachers</span><span class="p">(</span><span class="s2">&quot;John Smith&quot;</span><span class="p">)</span>
+<span class="n">teacher</span> <span class="o">=</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">teacher</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>     <span class="c1"># &quot;John Smith&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">teacher</span><span class="o">.</span><span class="n">avg_rating</span><span class="p">)</span>    <span class="c1"># 4.5</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">teacher</span><span class="o">.</span><span class="n">num_ratings</span><span class="p">)</span>   <span class="c1"># 100</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">teacher</span><span class="o">.</span><span class="n">department</span><span class="p">)</span>    <span class="c1"># &quot;Computer Science&quot;</span>
+
+<span class="c1"># Teacher&#39;s school info</span>
+<span class="k">if</span> <span class="n">teacher</span><span class="o">.</span><span class="n">school</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">teacher</span><span class="o">.</span><span class="n">school</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># &quot;Stanford University&quot;</span>
+
+<span class="c1"># Get more details</span>
+<span class="n">details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_teacher_details</span><span class="p">(</span><span class="n">teacher</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">would_take_again_percent</span><span class="p">)</span>  <span class="c1"># 80.0</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">avg_difficulty</span><span class="p">)</span>            <span class="c1"># 3.0</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#pyrmp.models.Teacher.id" title="Link to this definition"></a></dt>
+<dd><p>Unique identifier for this teacher (used in API calls).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.legacy_id">
+<span class="sig-name descname"><span class="pre">legacy_id</span></span><a class="headerlink" href="#pyrmp.models.Teacher.legacy_id" title="Link to this definition"></a></dt>
+<dd><p>Original numeric ID from older RMP system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.first_name">
+<span class="sig-name descname"><span class="pre">first_name</span></span><a class="headerlink" href="#pyrmp.models.Teacher.first_name" title="Link to this definition"></a></dt>
+<dd><p>Teacher’s first name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.last_name">
+<span class="sig-name descname"><span class="pre">last_name</span></span><a class="headerlink" href="#pyrmp.models.Teacher.last_name" title="Link to this definition"></a></dt>
+<dd><p>Teacher’s last name.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.department">
+<span class="sig-name descname"><span class="pre">department</span></span><a class="headerlink" href="#pyrmp.models.Teacher.department" title="Link to this definition"></a></dt>
+<dd><p>Department the teacher belongs to (e.g., “Computer Science”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.department_id">
+<span class="sig-name descname"><span class="pre">department_id</span></span><a class="headerlink" href="#pyrmp.models.Teacher.department_id" title="Link to this definition"></a></dt>
+<dd><p>Numeric department identifier.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.school">
+<span class="sig-name descname"><span class="pre">school</span></span><a class="headerlink" href="#pyrmp.models.Teacher.school" title="Link to this definition"></a></dt>
+<dd><p>The school this teacher is associated with.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyrmp.models.School" title="pyrmp.models.School">pyrmp.models.School</a> | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.avg_rating">
+<span class="sig-name descname"><span class="pre">avg_rating</span></span><a class="headerlink" href="#pyrmp.models.Teacher.avg_rating" title="Link to this definition"></a></dt>
+<dd><p>Average rating from students (0.0-5.0).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.avg_difficulty">
+<span class="sig-name descname"><span class="pre">avg_difficulty</span></span><a class="headerlink" href="#pyrmp.models.Teacher.avg_difficulty" title="Link to this definition"></a></dt>
+<dd><p>Average difficulty rating (0.0-5.0).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.num_ratings">
+<span class="sig-name descname"><span class="pre">num_ratings</span></span><a class="headerlink" href="#pyrmp.models.Teacher.num_ratings" title="Link to this definition"></a></dt>
+<dd><p>Total number of ratings received.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.would_take_again_percent">
+<span class="sig-name descname"><span class="pre">would_take_again_percent</span></span><a class="headerlink" href="#pyrmp.models.Teacher.would_take_again_percent" title="Link to this definition"></a></dt>
+<dd><p>Percentage of students who would take again.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.ratings_distribution">
+<span class="sig-name descname"><span class="pre">ratings_distribution</span></span><a class="headerlink" href="#pyrmp.models.Teacher.ratings_distribution" title="Link to this definition"></a></dt>
+<dd><p>Breakdown of rating distribution (dict with r1-r5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Any] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.course_codes">
+<span class="sig-name descname"><span class="pre">course_codes</span></span><a class="headerlink" href="#pyrmp.models.Teacher.course_codes" title="Link to this definition"></a></dt>
+<dd><p>List of course codes taught by this teacher.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.lock_status">
+<span class="sig-name descname"><span class="pre">lock_status</span></span><a class="headerlink" href="#pyrmp.models.Teacher.lock_status" title="Link to this definition"></a></dt>
+<dd><p>Whether the professor’s page is locked.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.is_saved">
+<span class="sig-name descname"><span class="pre">is_saved</span></span><a class="headerlink" href="#pyrmp.models.Teacher.is_saved" title="Link to this definition"></a></dt>
+<dd><p>Whether the professor is saved by the current user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="pyrmp.models.Teacher.full_name">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">full_name</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#pyrmp.models.Teacher.full_name" title="Link to this definition"></a></dt>
+<dd><p>Get the teacher’s full name.</p>
+<p>Returns the first and last name combined, or None if either is missing.
+Useful for display purposes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>“John Smith” if both names exist, None otherwise.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">teacher</span> <span class="o">=</span> <span class="n">Teacher</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">,</span> <span class="n">last_name</span><span class="o">=</span><span class="s2">&quot;Smith&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">teacher</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>  <span class="c1"># &quot;John Smith&quot;</span>
+
+<span class="n">teacher2</span> <span class="o">=</span> <span class="n">Teacher</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="n">first_name</span><span class="o">=</span><span class="s2">&quot;John&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">teacher2</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>  <span class="c1"># None</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrmp.models.School">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrmp.models.</span></span><span class="sig-name descname"><span class="pre">School</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">city</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">country</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_ratings</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">avg_rating_rounded</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">departments</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">summary</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyrmp/models.html#School"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrmp.models.School" title="Link to this definition"></a></dt>
+<dd><p>A school or university on RateMyProfessor.</p>
+<p>You’ll get School objects when searching for schools or when a teacher
+is associated with a school.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">school</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_school_details</span><span class="p">(</span><span class="s2">&quot;VGVhY2hlci0xMjM=&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">school</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>      <span class="c1"># &quot;Stanford University&quot;</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">school</span><span class="o">.</span><span class="n">num_ratings</span><span class="p">)</span>  <span class="c1"># 5000</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">school</span><span class="o">.</span><span class="n">avg_rating</span><span class="p">)</span>   <span class="c1"># 4.2</span>
+
+<span class="c1"># When searching</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search_schools</span><span class="p">(</span><span class="s2">&quot;MIT&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">school</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">school</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">school</span><span class="o">.</span><span class="n">city</span><span class="p">,</span> <span class="n">school</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.School.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#pyrmp.models.School.id" title="Link to this definition"></a></dt>
+<dd><p>Unique identifier for this school (used in API calls).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.School.legacy_id">
+<span class="sig-name descname"><span class="pre">legacy_id</span></span><a class="headerlink" href="#pyrmp.models.School.legacy_id" title="Link to this definition"></a></dt>
+<dd><p>Original numeric ID from older RMP system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.School.name">
+<span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pyrmp.models.School.name" title="Link to this definition"></a></dt>
+<dd><p>Full school name (e.g., “Stanford University”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.School.city">
+<span class="sig-name descname"><span class="pre">city</span></span><a class="headerlink" href="#pyrmp.models.School.city" title="Link to this definition"></a></dt>
+<dd><p>City where the school is located.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.School.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#pyrmp.models.School.state" title="Link to this definition"></a></dt>
+<dd><p>State abbreviation (e.g., “CA”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.School.country">
+<span class="sig-name descname"><span class="pre">country</span></span><a class="headerlink" href="#pyrmp.models.School.country" title="Link to this definition"></a></dt>
+<dd><p>Country of the school.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.School.num_ratings">
+<span class="sig-name descname"><span class="pre">num_ratings</span></span><a class="headerlink" href="#pyrmp.models.School.num_ratings" title="Link to this definition"></a></dt>
+<dd><p>Total number of ratings this school has received.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.School.avg_rating">
+<span class="sig-name descname"><span class="pre">avg_rating</span></span><a class="headerlink" href="#pyrmp.models.School.avg_rating" title="Link to this definition"></a></dt>
+<dd><p>Average overall school rating (0.0-5.0).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.School.avg_rating_rounded">
+<span class="sig-name descname"><span class="pre">avg_rating_rounded</span></span><a class="headerlink" href="#pyrmp.models.School.avg_rating_rounded" title="Link to this definition"></a></dt>
+<dd><p>Average rating rounded to nearest 0.5.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.School.departments">
+<span class="sig-name descname"><span class="pre">departments</span></span><a class="headerlink" href="#pyrmp.models.School.departments" title="Link to this definition"></a></dt>
+<dd><p>List of departments at the school.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Dict[str, Any]] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.School.summary">
+<span class="sig-name descname"><span class="pre">summary</span></span><a class="headerlink" href="#pyrmp.models.School.summary" title="Link to this definition"></a></dt>
+<dd><p>Detailed ratings for various school aspects.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, Any] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrmp.models.Rating">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrmp.models.</span></span><span class="sig-name descname"><span class="pre">Rating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">teacher</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrmp.models.Teacher" title="pyrmp.models.Teacher"><span class="pre">Teacher</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">helpful_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clarity_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">difficulty_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grade</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">class_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">would_take_again</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_for_credit</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">textbook_used</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">attendance_mandatory</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_for_online_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rating_tags</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thumbs_up_total</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thumbs_down_total</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag_status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">created_by_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyrmp/models.html#Rating"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrmp.models.Rating" title="Link to this definition"></a></dt>
+<dd><p>An individual teacher rating/review from a student.</p>
+<p>Ratings come from <cite>client.get_teacher_ratings()</cite> or
+<cite>client.get_rating_details()</cite>.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_teacher_ratings</span><span class="p">(</span><span class="n">teacher_id</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">rating</span> <span class="ow">in</span> <span class="n">ratings</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Rating: </span><span class="si">{</span><span class="n">rating</span><span class="o">.</span><span class="n">clarity_rating</span><span class="si">}</span><span class="s2">/5&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Difficulty: </span><span class="si">{</span><span class="n">rating</span><span class="o">.</span><span class="n">difficulty_rating</span><span class="si">}</span><span class="s2">/5&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Grade: </span><span class="si">{</span><span class="n">rating</span><span class="o">.</span><span class="n">grade</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Class: </span><span class="si">{</span><span class="n">rating</span><span class="o">.</span><span class="n">class_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Comment: </span><span class="si">{</span><span class="n">rating</span><span class="o">.</span><span class="n">comment</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Would take again: </span><span class="si">{</span><span class="n">rating</span><span class="o">.</span><span class="n">would_take_again</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Helpful votes: </span><span class="si">{</span><span class="n">rating</span><span class="o">.</span><span class="n">thumbs_up_total</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#pyrmp.models.Rating.id" title="Link to this definition"></a></dt>
+<dd><p>Unique identifier for this rating.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.legacy_id">
+<span class="sig-name descname"><span class="pre">legacy_id</span></span><a class="headerlink" href="#pyrmp.models.Rating.legacy_id" title="Link to this definition"></a></dt>
+<dd><p>Original numeric ID from older RMP system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.teacher">
+<span class="sig-name descname"><span class="pre">teacher</span></span><a class="headerlink" href="#pyrmp.models.Rating.teacher" title="Link to this definition"></a></dt>
+<dd><p>The teacher this rating is for (if available).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyrmp.models.Teacher" title="pyrmp.models.Teacher">pyrmp.models.Teacher</a> | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.comment">
+<span class="sig-name descname"><span class="pre">comment</span></span><a class="headerlink" href="#pyrmp.models.Rating.comment" title="Link to this definition"></a></dt>
+<dd><p>The written review text from the student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.helpful_rating">
+<span class="sig-name descname"><span class="pre">helpful_rating</span></span><a class="headerlink" href="#pyrmp.models.Rating.helpful_rating" title="Link to this definition"></a></dt>
+<dd><p>Helpfulness rating (1-5, where 5 is most helpful).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.clarity_rating">
+<span class="sig-name descname"><span class="pre">clarity_rating</span></span><a class="headerlink" href="#pyrmp.models.Rating.clarity_rating" title="Link to this definition"></a></dt>
+<dd><p>Clarity rating (1-5, where 5 is most clear).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.difficulty_rating">
+<span class="sig-name descname"><span class="pre">difficulty_rating</span></span><a class="headerlink" href="#pyrmp.models.Rating.difficulty_rating" title="Link to this definition"></a></dt>
+<dd><p>Difficulty rating (1-5, where 5 is most difficult).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.grade">
+<span class="sig-name descname"><span class="pre">grade</span></span><a class="headerlink" href="#pyrmp.models.Rating.grade" title="Link to this definition"></a></dt>
+<dd><p>Grade received in the class (e.g., “A”, “B+”, “Pass”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.class_name">
+<span class="sig-name descname"><span class="pre">class_name</span></span><a class="headerlink" href="#pyrmp.models.Rating.class_name" title="Link to this definition"></a></dt>
+<dd><p>Name of the class rated (e.g., “CS101”).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.would_take_again">
+<span class="sig-name descname"><span class="pre">would_take_again</span></span><a class="headerlink" href="#pyrmp.models.Rating.would_take_again" title="Link to this definition"></a></dt>
+<dd><p>Whether the student would take the teacher again.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.is_for_credit">
+<span class="sig-name descname"><span class="pre">is_for_credit</span></span><a class="headerlink" href="#pyrmp.models.Rating.is_for_credit" title="Link to this definition"></a></dt>
+<dd><p>Whether the class was taken for credit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.textbook_used">
+<span class="sig-name descname"><span class="pre">textbook_used</span></span><a class="headerlink" href="#pyrmp.models.Rating.textbook_used" title="Link to this definition"></a></dt>
+<dd><p>Whether a textbook was used in the class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.attendance_mandatory">
+<span class="sig-name descname"><span class="pre">attendance_mandatory</span></span><a class="headerlink" href="#pyrmp.models.Rating.attendance_mandatory" title="Link to this definition"></a></dt>
+<dd><p>Whether attendance was mandatory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.is_for_online_class">
+<span class="sig-name descname"><span class="pre">is_for_online_class</span></span><a class="headerlink" href="#pyrmp.models.Rating.is_for_online_class" title="Link to this definition"></a></dt>
+<dd><p>Whether this was for an online class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.rating_tags">
+<span class="sig-name descname"><span class="pre">rating_tags</span></span><a class="headerlink" href="#pyrmp.models.Rating.rating_tags" title="Link to this definition"></a></dt>
+<dd><p>List of tags describing the rating (e.g., [“amazing lectures”]).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[str] | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.thumbs_up_total">
+<span class="sig-name descname"><span class="pre">thumbs_up_total</span></span><a class="headerlink" href="#pyrmp.models.Rating.thumbs_up_total" title="Link to this definition"></a></dt>
+<dd><p>Number of “helpful” votes this rating received.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.thumbs_down_total">
+<span class="sig-name descname"><span class="pre">thumbs_down_total</span></span><a class="headerlink" href="#pyrmp.models.Rating.thumbs_down_total" title="Link to this definition"></a></dt>
+<dd><p>Number of “unhelpful” votes this rating received.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.date">
+<span class="sig-name descname"><span class="pre">date</span></span><a class="headerlink" href="#pyrmp.models.Rating.date" title="Link to this definition"></a></dt>
+<dd><p>Date the rating was posted (string or datetime).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | datetime.datetime | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.flag_status">
+<span class="sig-name descname"><span class="pre">flag_status</span></span><a class="headerlink" href="#pyrmp.models.Rating.flag_status" title="Link to this definition"></a></dt>
+<dd><p>Whether the rating has been flagged for review.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.Rating.created_by_user">
+<span class="sig-name descname"><span class="pre">created_by_user</span></span><a class="headerlink" href="#pyrmp.models.Rating.created_by_user" title="Link to this definition"></a></dt>
+<dd><p>Whether this rating was created by the current user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrmp.models.</span></span><span class="sig-name descname"><span class="pre">SchoolRating</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">legacy_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">school</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pyrmp.models.School" title="pyrmp.models.School"><span class="pre">School</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">comment</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clubs_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facilities_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">food_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">happiness_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">internet_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">location_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opportunities_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reputation_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">safety_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">social_rating</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">date</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thumbs_up_total</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thumbs_down_total</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flag_status</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">created_by_user</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyrmp/models.html#SchoolRating"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrmp.models.SchoolRating" title="Link to this definition"></a></dt>
+<dd><p>A rating/review for an entire school (not a teacher).</p>
+<p>School ratings come from <cite>client.get_school_ratings()</cite> or
+<cite>client.get_rating_details()</cite>.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ratings</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_school_ratings</span><span class="p">(</span><span class="n">school_id</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">rating</span> <span class="ow">in</span> <span class="n">ratings</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Facilities: </span><span class="si">{</span><span class="n">rating</span><span class="o">.</span><span class="n">facilities_rating</span><span class="si">}</span><span class="s2">/5&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Food: </span><span class="si">{</span><span class="n">rating</span><span class="o">.</span><span class="n">food_rating</span><span class="si">}</span><span class="s2">/5&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Social: </span><span class="si">{</span><span class="n">rating</span><span class="o">.</span><span class="n">social_rating</span><span class="si">}</span><span class="s2">/5&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Comment: </span><span class="si">{</span><span class="n">rating</span><span class="o">.</span><span class="n">comment</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;---&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.id">
+<span class="sig-name descname"><span class="pre">id</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.id" title="Link to this definition"></a></dt>
+<dd><p>Unique identifier for this school rating.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.legacy_id">
+<span class="sig-name descname"><span class="pre">legacy_id</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.legacy_id" title="Link to this definition"></a></dt>
+<dd><p>Original numeric ID from older RMP system.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.school">
+<span class="sig-name descname"><span class="pre">school</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.school" title="Link to this definition"></a></dt>
+<dd><p>The school this rating is for (if available).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pyrmp.models.School" title="pyrmp.models.School">pyrmp.models.School</a> | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.comment">
+<span class="sig-name descname"><span class="pre">comment</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.comment" title="Link to this definition"></a></dt>
+<dd><p>The written review text from the student.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.clubs_rating">
+<span class="sig-name descname"><span class="pre">clubs_rating</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.clubs_rating" title="Link to this definition"></a></dt>
+<dd><p>Rating for clubs and activities (1-5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.facilities_rating">
+<span class="sig-name descname"><span class="pre">facilities_rating</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.facilities_rating" title="Link to this definition"></a></dt>
+<dd><p>Rating for facilities (1-5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.food_rating">
+<span class="sig-name descname"><span class="pre">food_rating</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.food_rating" title="Link to this definition"></a></dt>
+<dd><p>Rating for food quality (1-5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.happiness_rating">
+<span class="sig-name descname"><span class="pre">happiness_rating</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.happiness_rating" title="Link to this definition"></a></dt>
+<dd><p>Overall happiness rating (1-5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.internet_rating">
+<span class="sig-name descname"><span class="pre">internet_rating</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.internet_rating" title="Link to this definition"></a></dt>
+<dd><p>Rating for internet speed (1-5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.location_rating">
+<span class="sig-name descname"><span class="pre">location_rating</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.location_rating" title="Link to this definition"></a></dt>
+<dd><p>Rating for campus location (1-5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.opportunities_rating">
+<span class="sig-name descname"><span class="pre">opportunities_rating</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.opportunities_rating" title="Link to this definition"></a></dt>
+<dd><p>Rating for opportunities (1-5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.reputation_rating">
+<span class="sig-name descname"><span class="pre">reputation_rating</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.reputation_rating" title="Link to this definition"></a></dt>
+<dd><p>Rating for school reputation (1-5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.safety_rating">
+<span class="sig-name descname"><span class="pre">safety_rating</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.safety_rating" title="Link to this definition"></a></dt>
+<dd><p>Rating for campus safety (1-5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.social_rating">
+<span class="sig-name descname"><span class="pre">social_rating</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.social_rating" title="Link to this definition"></a></dt>
+<dd><p>Rating for social activities (1-5).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.date">
+<span class="sig-name descname"><span class="pre">date</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.date" title="Link to this definition"></a></dt>
+<dd><p>Date the rating was posted.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | datetime.datetime | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.thumbs_up_total">
+<span class="sig-name descname"><span class="pre">thumbs_up_total</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.thumbs_up_total" title="Link to this definition"></a></dt>
+<dd><p>Number of helpful votes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.thumbs_down_total">
+<span class="sig-name descname"><span class="pre">thumbs_down_total</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.thumbs_down_total" title="Link to this definition"></a></dt>
+<dd><p>Number of unhelpful votes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.flag_status">
+<span class="sig-name descname"><span class="pre">flag_status</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.flag_status" title="Link to this definition"></a></dt>
+<dd><p>Whether the rating has been flagged.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.SchoolRating.created_by_user">
+<span class="sig-name descname"><span class="pre">created_by_user</span></span><a class="headerlink" href="#pyrmp.models.SchoolRating.created_by_user" title="Link to this definition"></a></dt>
+<dd><p>Whether this was created by the current user.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pyrmp.models.PaginatedResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">pyrmp.models.</span></span><span class="sig-name descname"><span class="pre">PaginatedResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">items</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_next_page</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end_cursor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">total_count</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pyrmp/models.html#PaginatedResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#pyrmp.models.PaginatedResult" title="Link to this definition"></a></dt>
+<dd><p>A page of results from a search or listing operation.</p>
+<p>All search and listing methods return this wrapper. Use <cite>items</cite> to access
+the actual Teacher/School/Rating objects, and <cite>has_next_page</cite>/<cite>end_cursor</cite>
+for pagination.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get first page</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search_teachers</span><span class="p">(</span><span class="s2">&quot;Smith&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>           <span class="c1"># Number of items in this page</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="n">results</span><span class="p">))</span>          <span class="c1"># True if any items</span>
+
+<span class="k">for</span> <span class="n">teacher</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">teacher</span><span class="o">.</span><span class="n">full_name</span><span class="p">)</span>
+
+<span class="c1"># Get next page</span>
+<span class="k">if</span> <span class="n">results</span><span class="o">.</span><span class="n">has_next_page</span><span class="p">:</span>
+    <span class="n">next_page</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search_teachers</span><span class="p">(</span><span class="s2">&quot;Smith&quot;</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="c1"># ... handle next_page</span>
+</pre></div>
+</div>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.PaginatedResult.items">
+<span class="sig-name descname"><span class="pre">items</span></span><a class="headerlink" href="#pyrmp.models.PaginatedResult.items" title="Link to this definition"></a></dt>
+<dd><p>List of items in the current page (Teacher, School, or Rating objects).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>List[Any]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.PaginatedResult.has_next_page">
+<span class="sig-name descname"><span class="pre">has_next_page</span></span><a class="headerlink" href="#pyrmp.models.PaginatedResult.has_next_page" title="Link to this definition"></a></dt>
+<dd><p>Whether there are more pages available after this one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.PaginatedResult.end_cursor">
+<span class="sig-name descname"><span class="pre">end_cursor</span></span><a class="headerlink" href="#pyrmp.models.PaginatedResult.end_cursor" title="Link to this definition"></a></dt>
+<dd><p>Cursor string to use for fetching the next page.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pyrmp.models.PaginatedResult.total_count">
+<span class="sig-name descname"><span class="pre">total_count</span></span><a class="headerlink" href="#pyrmp.models.PaginatedResult.total_count" title="Link to this definition"></a></dt>
+<dd><p>Total number of items across all pages (if available).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Link to this heading"></a></h2>
+</section>
+<section id="cli">
+<h2>CLI<a class="headerlink" href="#cli" title="Link to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="pyrmp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2026, Aarush Murari.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
