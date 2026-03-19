@@ -362,7 +362,7 @@ class RateMyProfessorClient:
         )
 
     def search_teachers(
-        self, query: str, count: int = 10, include_compare: bool = False
+        self, query: str, count: int = 10, include_compare: bool = True
     ) -> PaginatedResult:
         """
         Search for teachers by name.
@@ -373,7 +373,7 @@ class RateMyProfessorClient:
         Args:
             query: Teacher name to search for (e.g., "John Smith", "Smith", "J. Smith").
             count: How many results to return (1-100). Defaults to 10.
-            include_compare: Include comparison data. You probably want False.
+            include_compare: Include ratings data. Defaults to True.
 
         Returns:
             PaginatedResult with Teacher objects in `.items`.
@@ -428,7 +428,7 @@ class RateMyProfessorClient:
         self,
         query: Optional[str] = None,
         count: int = 10,
-        include_compare: bool = False,
+        include_compare: bool = True,
     ) -> PaginatedResult:
         """
         Search for schools by name.
@@ -436,7 +436,7 @@ class RateMyProfessorClient:
         Args:
             query: School name to search for (e.g., "MIT", "Stanford", "Arizona State"). Optional.
             count: How many results to return (1-100). Defaults to 10.
-            include_compare: Include comparison data. You probably want False.
+            include_compare: Include ratings data. Defaults to True.
 
         Returns:
             PaginatedResult with School objects in `.items`.
