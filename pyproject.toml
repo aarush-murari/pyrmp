@@ -27,7 +27,6 @@ classifiers = [
 
 dependencies = [
     "gql[all]>=3.0.0",
-    "requests>=2.28.0",
 ]
 
 [project.optional-dependencies]
@@ -35,6 +34,7 @@ dev = [
     "pytest>=7.0.0",
     "pytest-asyncio>=0.21.0",
     "pytest-cov>=4.0.0",
+    "requests>=2.28.0",
 ]
 
 [project.scripts]
@@ -54,4 +54,9 @@ include = ["pyrmp/**/*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 asyncio_mode = "auto"
-addopts = "-v --tb=short"
+addopts = "-v --tb=short --retries=3 --retry-delay=2"
+
+[dependency-groups]
+dev = [
+    "pytest-retry>=1.7.0",
+]
