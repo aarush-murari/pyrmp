@@ -14,7 +14,7 @@ sys.path.insert(0, os.path.abspath("../.."))
 project = "pyrmp"
 copyright = "2026, Aarush Murari"
 author = "Aarush Murari"
-release = "0.1.5"
+release = "0.1.6"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

@@ -583,7 +583,9 @@ class TestGetTeacherRatings:
         assert rating.rating_tags == ["amazing lectures", "fair grader"]
         assert rating.thumbs_up_total == 10
         assert rating.thumbs_down_total == 1
-        assert rating.date == "2024-01-15"
+        from datetime import datetime
+
+        assert rating.date == datetime(2024, 1, 15)
         assert rating.flag_status == "DEFAULT"
         assert rating.created_by_user is False
         client.close()
@@ -1320,3 +1322,422 @@ class TestORMNegativeInputs:
 
         with pytest.raises(ValueError):
             school.get_ratings()
+
+
+class TestRawQuery:
+    """Test raw_query method"""
+
+
+class TestDateParsing:
+    """Test date parsing in ratings"""
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_rating_date_iso_format(self, mock_execute):
+        """Test rating date parsing with ISO format"""
+        mock_execute.return_value = {
+            "node": {
+                "__typename": "Teacher",
+                "id": "t1",
+                "ratings": {
+                    "edges": [
+                        {"node": {"id": "r1", "clarityRating": 5, "date": "2024-03-15"}}
+                    ],
+                    "pageInfo": {"hasNextPage": False},
+                },
+            }
+        }
+
+        client = RateMyProfessorClient()
+        result = client.get_teacher_ratings("Teacher-123", count=1)
+
+        from datetime import datetime
+
+        assert result.items[0].date == datetime(2024, 3, 15)
+        client.close()
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_rating_date_with_time(self, mock_execute):
+        """Test rating date parsing with time component"""
+        mock_execute.return_value = {
+            "node": {
+                "__typename": "Teacher",
+                "id": "t1",
+                "ratings": {
+                    "edges": [
+                        {
+                            "node": {
+                                "id": "r1",
+                                "clarityRating": 5,
+                                "date": "2024-03-15 21:20:35 +0000 UTC",
+                            }
+                        }
+                    ],
+                    "pageInfo": {"hasNextPage": False},
+                },
+            }
+        }
+
+        client = RateMyProfessorClient()
+        result = client.get_teacher_ratings("Teacher-123", count=1)
+
+        from datetime import datetime
+
+        assert result.items[0].date == datetime(2024, 3, 15)
+        client.close()
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_rating_date_invalid(self, mock_execute):
+        """Test rating date parsing with invalid date"""
+        mock_execute.return_value = {
+            "node": {
+                "__typename": "Teacher",
+                "id": "t1",
+                "ratings": {
+                    "edges": [
+                        {
+                            "node": {
+                                "id": "r1",
+                                "clarityRating": 5,
+                                "date": "invalid-date",
+                            }
+                        }
+                    ],
+                    "pageInfo": {"hasNextPage": False},
+                },
+            }
+        }
+
+        client = RateMyProfessorClient()
+        result = client.get_teacher_ratings("Teacher-123", count=1)
+
+        assert result.items[0].date is None
+        client.close()
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_rating_date_none(self, mock_execute):
+        """Test rating date parsing with None"""
+        mock_execute.return_value = {
+            "node": {
+                "__typename": "Teacher",
+                "id": "t1",
+                "ratings": {
+                    "edges": [{"node": {"id": "r1", "clarityRating": 5, "date": None}}],
+                    "pageInfo": {"hasNextPage": False},
+                },
+            }
+        }
+
+        client = RateMyProfessorClient()
+        result = client.get_teacher_ratings("Teacher-123", count=1)
+
+        assert result.items[0].date is None
+        client.close()
+
+
+class TestInputValidationPositive:
+    """Test positive input validation - valid data passes"""
+
+    def test_teacher_valid_string_id(self):
+        """Test Teacher with valid string ID"""
+        teacher = Teacher(id="Teacher-123")
+        assert teacher.id == "Teacher-123"
+        assert isinstance(teacher.id, str)
+
+    def test_teacher_valid_int_legacy_id(self):
+        """Test Teacher with valid integer legacy_id"""
+        teacher = Teacher(id="t1", legacy_id=123)
+        assert teacher.legacy_id == 123
+        assert isinstance(teacher.legacy_id, int)
+
+    def test_teacher_valid_float_ratings(self):
+        """Test Teacher with valid float ratings"""
+        teacher = Teacher(
+            id="t1", avg_rating=4.5, avg_difficulty=2.3, would_take_again_percent=80.5
+        )
+        assert teacher.avg_rating == 4.5
+        assert teacher.avg_difficulty == 2.3
+        assert teacher.would_take_again_percent == 80.5
+
+    def test_teacher_valid_int_num_ratings(self):
+        """Test Teacher with valid integer num_ratings"""
+        teacher = Teacher(id="t1", num_ratings=100)
+        assert teacher.num_ratings == 100
+        assert isinstance(teacher.num_ratings, int)
+
+    def test_school_valid_string_id(self):
+        """Test School with valid string ID"""
+        school = School(id="School-456")
+        assert school.id == "School-456"
+        assert isinstance(school.id, str)
+
+    def test_school_valid_numeric_ratings(self):
+        """Test School with valid numeric fields"""
+        school = School(
+            id="s1",
+            legacy_id=789,
+            num_ratings=5000,
+            avg_rating=4.2,
+            avg_rating_rounded=4.0,
+        )
+        assert school.legacy_id == 789
+        assert school.num_ratings == 5000
+        assert school.avg_rating == 4.2
+        assert school.avg_rating_rounded == 4.0
+
+    def test_rating_valid_numeric_fields(self):
+        """Test Rating with valid numeric fields"""
+        rating = Rating(
+            id="Rating-789",
+            legacy_id=456,
+            helpful_rating=5.0,
+            clarity_rating=4.0,
+            difficulty_rating=3.0,
+            thumbs_up_total=10,
+            thumbs_down_total=1,
+        )
+        assert rating.helpful_rating == 5.0
+        assert rating.clarity_rating == 4.0
+        assert rating.difficulty_rating == 3.0
+        assert rating.thumbs_up_total == 10
+        assert rating.thumbs_down_total == 1
+
+
+class TestInputValidationNegative:
+    """Test negative input validation - invalid data raises TypeError"""
+
+    def test_teacher_invalid_id_type(self):
+        """Test Teacher with non-string ID raises TypeError"""
+        with pytest.raises(TypeError) as exc_info:
+            Teacher(id=123)
+        assert "id must be a string" in str(exc_info.value)
+
+    def test_teacher_invalid_legacy_id_type(self):
+        """Test Teacher with non-integer legacy_id raises TypeError"""
+        with pytest.raises(TypeError) as exc_info:
+            Teacher(id="t1", legacy_id="not-a-number")
+        assert "legacy_id must be an integer" in str(exc_info.value)
+
+    def test_teacher_invalid_avg_rating_type(self):
+        """Test Teacher with non-float avg_rating raises TypeError"""
+        with pytest.raises(TypeError) as exc_info:
+            Teacher(id="t1", avg_rating="not-a-float")
+        assert "avg_rating must be a float" in str(exc_info.value)
+
+    def test_teacher_invalid_num_ratings_type(self):
+        """Test Teacher with non-integer num_ratings raises TypeError"""
+        with pytest.raises(TypeError) as exc_info:
+            Teacher(id="t1", num_ratings="not-an-int")
+        assert "num_ratings must be an integer" in str(exc_info.value)
+
+    def test_school_invalid_id_type(self):
+        """Test School with non-string ID raises TypeError"""
+        with pytest.raises(TypeError) as exc_info:
+            School(id=456)
+        assert "id must be a string" in str(exc_info.value)
+
+    def test_school_invalid_num_ratings_type(self):
+        """Test School with non-integer num_ratings raises TypeError"""
+        with pytest.raises(TypeError) as exc_info:
+            School(id="s1", num_ratings="not-an-int")
+        assert "num_ratings must be an integer" in str(exc_info.value)
+
+    def test_rating_invalid_id_type(self):
+        """Test Rating with non-string ID raises TypeError"""
+        with pytest.raises(TypeError) as exc_info:
+            Rating(id=789)
+        assert "id must be a string" in str(exc_info.value)
+
+    def test_rating_invalid_helpful_rating_type(self):
+        """Test Rating with non-float helpful_rating raises TypeError"""
+        with pytest.raises(TypeError) as exc_info:
+            Rating(id="r1", helpful_rating="not-a-float")
+        assert "helpful_rating must be a float" in str(exc_info.value)
+
+
+class TestInputValidationTypeCoercion:
+    """Test type coercion - strings converted to proper types"""
+
+    def test_teacher_string_to_int_legacy_id(self):
+        """Test Teacher converts string legacy_id to int"""
+        teacher = Teacher(id="t1", legacy_id="123")
+        assert teacher.legacy_id == 123
+        assert isinstance(teacher.legacy_id, int)
+
+    def test_teacher_string_to_float_avg_rating(self):
+        """Test Teacher converts string avg_rating to float"""
+        teacher = Teacher(id="t1", avg_rating="4.5")
+        assert teacher.avg_rating == 4.5
+        assert isinstance(teacher.avg_rating, float)
+
+    def test_teacher_string_to_int_num_ratings(self):
+        """Test Teacher converts string num_ratings to int"""
+        teacher = Teacher(id="t1", num_ratings="100")
+        assert teacher.num_ratings == 100
+        assert isinstance(teacher.num_ratings, int)
+
+    def test_school_string_to_int_legacy_id(self):
+        """Test School converts string legacy_id to int"""
+        school = School(id="s1", legacy_id="789")
+        assert school.legacy_id == 789
+        assert isinstance(school.legacy_id, int)
+
+    def test_school_string_to_float_avg_rating(self):
+        """Test School converts string avg_rating to float"""
+        school = School(id="s1", avg_rating="4.2")
+        assert school.avg_rating == 4.2
+        assert isinstance(school.avg_rating, float)
+
+    def test_rating_string_to_float_clarity_rating(self):
+        """Test Rating converts string clarity_rating to float"""
+        rating = Rating(id="r1", clarity_rating="4.0")
+        assert rating.clarity_rating == 4.0
+        assert isinstance(rating.clarity_rating, float)
+
+    def test_rating_string_to_int_thumbs_up(self):
+        """Test Rating converts string thumbs_up_total to int"""
+        rating = Rating(id="r1", thumbs_up_total="10")
+        assert rating.thumbs_up_total == 10
+        assert isinstance(rating.thumbs_up_total, int)
+
+
+class TestInputValidationInjection:
+    """Test injection attempts - malicious input handled safely"""
+
+    def test_sql_injection_in_id(self):
+        """Test SQL injection attempt in ID"""
+        malicious_id = "Teacher-123' OR '1'='1"
+        teacher = Teacher(id=malicious_id)
+        assert teacher.id == malicious_id
+        assert isinstance(teacher.id, str)
+
+    def test_xss_in_first_name(self):
+        """Test XSS attempt in first_name"""
+        malicious_name = "<script>alert('xss')</script>"
+        teacher = Teacher(id="t1", first_name=malicious_name)
+        assert teacher.first_name == malicious_name
+        assert isinstance(teacher.first_name, str)
+
+    def test_command_injection_in_department(self):
+        """Test command injection attempt in department"""
+        malicious_dept = "Computer Science; rm -rf /"
+        teacher = Teacher(id="t1", department=malicious_dept)
+        assert teacher.department == malicious_dept
+        assert isinstance(teacher.department, str)
+
+    def test_path_traversal_in_id(self):
+        """Test path traversal attempt in ID"""
+        malicious_id = "../../../etc/passwd"
+        teacher = Teacher(id=malicious_id)
+        assert teacher.id == malicious_id
+
+    def test_unicode_injection_in_comment(self):
+        """Test Unicode injection attempt in comment"""
+        malicious_comment = "Great professor! \u202e\u0000\u202d"
+        rating = Rating(id="r1", comment=malicious_comment)
+        assert rating.comment == malicious_comment
+
+    def test_very_long_string_injection(self):
+        """Test very long string injection attempt"""
+        malicious_id = "A" * 10000
+        teacher = Teacher(id=malicious_id)
+        assert len(teacher.id) == 10000
+
+    def test_null_byte_injection(self):
+        """Test null byte injection attempt"""
+        malicious_id = "Teacher-123\x00malicious"
+        teacher = Teacher(id=malicious_id)
+        assert teacher.id == malicious_id
+
+    def test_html_injection_in_name(self):
+        """Test HTML injection attempt in name"""
+        malicious_name = "<img src=x onerror=alert('xss')>"
+        teacher = Teacher(id="t1", first_name=malicious_name)
+        assert teacher.first_name == malicious_name
+
+    def test_json_injection_in_department(self):
+        """Test JSON injection attempt in department"""
+        malicious_dept = '{"department": "CS", "admin": true}'
+        teacher = Teacher(id="t1", department=malicious_dept)
+        assert teacher.department == malicious_dept
+
+    def test_template_injection_in_name(self):
+        """Test template injection attempt in name"""
+        malicious_name = "{{constructor.constructor('return this')()}}"
+        teacher = Teacher(id="t1", first_name=malicious_name)
+        assert teacher.first_name == malicious_name
+
+
+class TestInputValidationEdgeCases:
+    """Test edge cases in input validation"""
+
+    def test_teacher_empty_string_id(self):
+        """Test Teacher with empty string ID"""
+        teacher = Teacher(id="")
+        assert teacher.id == ""
+        assert isinstance(teacher.id, str)
+
+    def test_teacher_none_values(self):
+        """Test Teacher with None values"""
+        teacher = Teacher(
+            id="t1", first_name=None, last_name=None, avg_rating=None, num_ratings=None
+        )
+        assert teacher.first_name is None
+        assert teacher.last_name is None
+        assert teacher.avg_rating is None
+        assert teacher.num_ratings is None
+
+    def test_teacher_zero_values(self):
+        """Test Teacher with zero values"""
+        teacher = Teacher(
+            id="t1",
+            avg_rating=0.0,
+            avg_difficulty=0.0,
+            num_ratings=0,
+            would_take_again_percent=0.0,
+        )
+        assert teacher.avg_rating == 0.0
+        assert teacher.avg_difficulty == 0.0
+        assert teacher.num_ratings == 0
+        assert teacher.would_take_again_percent == 0.0
+
+    def test_teacher_negative_values(self):
+        """Test Teacher with negative values"""
+        teacher = Teacher(
+            id="t1",
+            avg_rating=-1.0,
+            avg_difficulty=-2.0,
+            num_ratings=-10,
+            would_take_again_percent=-50.0,
+        )
+        assert teacher.avg_rating == -1.0
+        assert teacher.avg_difficulty == -2.0
+        assert teacher.num_ratings == -10
+        assert teacher.would_take_again_percent == -50.0
+
+    def test_teacher_very_large_values(self):
+        """Test Teacher with very large values"""
+        teacher = Teacher(id="t1", avg_rating=999999.99, num_ratings=999999999)
+        assert teacher.avg_rating == 999999.99
+        assert teacher.num_ratings == 999999999
+
+    def test_rating_empty_comment(self):
+        """Test Rating with empty comment"""
+        rating = Rating(id="r1", comment="")
+        assert rating.comment == ""
+
+    def test_rating_none_comment(self):
+        """Test Rating with None comment"""
+        rating = Rating(id="r1", comment=None)
+        assert rating.comment is None
+
+    def test_rating_special_characters_comment(self):
+        """Test Rating with special characters in comment"""
+        special_comment = "Great! @#$%^&*()_+-=[]{}|;':\",./<>?"
+        rating = Rating(id="r1", comment=special_comment)
+        assert rating.comment == special_comment
+
+    def test_rating_unicode_comment(self):
+        """Test Rating with Unicode characters in comment"""
+        unicode_comment = "Great professor! 你好 🎉 مرحبا"
+        rating = Rating(id="r1", comment=unicode_comment)
+        assert rating.comment == unicode_comment

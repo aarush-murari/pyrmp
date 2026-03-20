@@ -40,6 +40,7 @@ NOTE: This library is intentionally READ-ONLY. For write operations
 from typing import Optional, List, Dict, Any, Union
 import time
 import base64
+from datetime import datetime
 
 from gql import Client, gql
 from gql.graphql_request import GraphQLRequest
@@ -87,6 +88,26 @@ def _encode_id(readable_id: str) -> str:
         pass
     # Encode the readable ID
     return base64.b64encode(readable_id.encode("utf-8")).decode("utf-8")
+
+
+def _parse_date(date_str: Any) -> Optional[datetime]:
+    """
+    Parse RMP date strings to datetime objects.
+
+    Handles formats like:
+    - "2024-01-15"
+    - "2024-01-15 21:20:35 +0000 UTC"
+
+    Returns None if parsing fails.
+    """
+    if not date_str or not isinstance(date_str, str):
+        return None
+    try:
+        # Try ISO format first
+        part = date_str.split(" ")[0]
+        return datetime.fromisoformat(part)
+    except (ValueError, TypeError):
+        return None
 
 
 class RateMyProfessorClient:
@@ -320,7 +341,7 @@ class RateMyProfessorClient:
             rating_tags=rating_node.get("ratingTags"),
             thumbs_up_total=rating_node.get("thumbsUpTotal"),
             thumbs_down_total=rating_node.get("thumbsDownTotal"),
-            date=rating_node.get("date"),
+            date=_parse_date(rating_node.get("date")),
             flag_status=rating_node.get("flagStatus"),
             created_by_user=rating_node.get("createdByUser"),
         )

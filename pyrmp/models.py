@@ -87,6 +87,46 @@ class School:
     summary: Optional[Dict[str, Any]] = None
     _client: Optional[Any] = field(default=None, repr=False, compare=False)
 
+    def __post_init__(self):
+        """Validate and convert types after initialization."""
+        if not isinstance(self.id, str):
+            raise TypeError(f"id must be a string, got {type(self.id).__name__}")
+
+        # Convert numeric fields to proper types
+        if self.legacy_id is not None and not isinstance(self.legacy_id, int):
+            try:
+                self.legacy_id = int(self.legacy_id)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"legacy_id must be an integer, got {type(self.legacy_id).__name__}"
+                )
+
+        if self.num_ratings is not None and not isinstance(self.num_ratings, int):
+            try:
+                self.num_ratings = int(self.num_ratings)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"num_ratings must be an integer, got {type(self.num_ratings).__name__}"
+                )
+
+        if self.avg_rating is not None and not isinstance(self.avg_rating, float):
+            try:
+                self.avg_rating = float(self.avg_rating)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"avg_rating must be a float, got {type(self.avg_rating).__name__}"
+                )
+
+        if self.avg_rating_rounded is not None and not isinstance(
+            self.avg_rating_rounded, float
+        ):
+            try:
+                self.avg_rating_rounded = float(self.avg_rating_rounded)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"avg_rating_rounded must be a float, got {type(self.avg_rating_rounded).__name__}"
+                )
+
     def get_ratings(self, count: int = 20):
         """
         Get ratings for this school.
@@ -223,6 +263,56 @@ class Teacher:
     lock_status: Optional[str] = None
     is_saved: Optional[bool] = None
     _client: Optional[Any] = field(default=None, repr=False, compare=False)
+
+    def __post_init__(self):
+        """Validate and convert types after initialization."""
+        if not isinstance(self.id, str):
+            raise TypeError(f"id must be a string, got {type(self.id).__name__}")
+
+        # Convert numeric fields to proper types
+        if self.legacy_id is not None and not isinstance(self.legacy_id, int):
+            try:
+                self.legacy_id = int(self.legacy_id)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"legacy_id must be an integer, got {type(self.legacy_id).__name__}"
+                )
+
+        if self.avg_rating is not None and not isinstance(self.avg_rating, float):
+            try:
+                self.avg_rating = float(self.avg_rating)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"avg_rating must be a float, got {type(self.avg_rating).__name__}"
+                )
+
+        if self.avg_difficulty is not None and not isinstance(
+            self.avg_difficulty, float
+        ):
+            try:
+                self.avg_difficulty = float(self.avg_difficulty)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"avg_difficulty must be a float, got {type(self.avg_difficulty).__name__}"
+                )
+
+        if self.num_ratings is not None and not isinstance(self.num_ratings, int):
+            try:
+                self.num_ratings = int(self.num_ratings)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"num_ratings must be an integer, got {type(self.num_ratings).__name__}"
+                )
+
+        if self.would_take_again_percent is not None and not isinstance(
+            self.would_take_again_percent, float
+        ):
+            try:
+                self.would_take_again_percent = float(self.would_take_again_percent)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"would_take_again_percent must be a float, got {type(self.would_take_again_percent).__name__}"
+                )
 
     def get_ratings(self, count: int = 20, course_filter: Optional[str] = None):
         """
@@ -380,6 +470,70 @@ class Rating:
     date: Optional[Union[str, datetime]] = None
     flag_status: Optional[str] = None
     created_by_user: Optional[bool] = None
+
+    def __post_init__(self):
+        """Validate and convert types after initialization."""
+        if not isinstance(self.id, str):
+            raise TypeError(f"id must be a string, got {type(self.id).__name__}")
+
+        # Convert numeric fields to proper types
+        if self.legacy_id is not None and not isinstance(self.legacy_id, int):
+            try:
+                self.legacy_id = int(self.legacy_id)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"legacy_id must be an integer, got {type(self.legacy_id).__name__}"
+                )
+
+        if self.helpful_rating is not None and not isinstance(
+            self.helpful_rating, float
+        ):
+            try:
+                self.helpful_rating = float(self.helpful_rating)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"helpful_rating must be a float, got {type(self.helpful_rating).__name__}"
+                )
+
+        if self.clarity_rating is not None and not isinstance(
+            self.clarity_rating, float
+        ):
+            try:
+                self.clarity_rating = float(self.clarity_rating)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"clarity_rating must be a float, got {type(self.clarity_rating).__name__}"
+                )
+
+        if self.difficulty_rating is not None and not isinstance(
+            self.difficulty_rating, float
+        ):
+            try:
+                self.difficulty_rating = float(self.difficulty_rating)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"difficulty_rating must be a float, got {type(self.difficulty_rating).__name__}"
+                )
+
+        if self.thumbs_up_total is not None and not isinstance(
+            self.thumbs_up_total, int
+        ):
+            try:
+                self.thumbs_up_total = int(self.thumbs_up_total)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"thumbs_up_total must be an integer, got {type(self.thumbs_up_total).__name__}"
+                )
+
+        if self.thumbs_down_total is not None and not isinstance(
+            self.thumbs_down_total, int
+        ):
+            try:
+                self.thumbs_down_total = int(self.thumbs_down_total)
+            except (ValueError, TypeError):
+                raise TypeError(
+                    f"thumbs_down_total must be an integer, got {type(self.thumbs_down_total).__name__}"
+                )
 
     def __str__(self):
         if self.teacher:
