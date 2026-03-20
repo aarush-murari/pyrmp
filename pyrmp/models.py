@@ -91,6 +91,14 @@ class School:
     def __repr__(self):
         return f"<School {self.name}>"
 
+    def __hash__(self):
+        return hash(self.id)
+
+    def __eq__(self, other):
+        if isinstance(other, School):
+            return self.id == other.id
+        return False
+
 
 @dataclass
 class Teacher:
@@ -183,6 +191,14 @@ class Teacher:
     def __repr__(self):
         return f"<Teacher {self.full_name or self.id}>"
 
+    def __hash__(self):
+        return hash(self.id)
+
+    def __eq__(self, other):
+        if isinstance(other, Teacher):
+            return self.id == other.id
+        return False
+
 
 @dataclass
 class Rating:
@@ -258,6 +274,14 @@ class Rating:
     def __repr__(self):
         return f"<Rating {self.id}>"
 
+    def __hash__(self):
+        return hash(self.id)
+
+    def __eq__(self, other):
+        if isinstance(other, Rating):
+            return self.id == other.id
+        return False
+
 
 @dataclass
 class SchoolRating:
@@ -327,6 +351,14 @@ class SchoolRating:
 
     def __repr__(self):
         return f"<SchoolRating {self.id}>"
+
+    def __hash__(self):
+        return hash(self.id)
+
+    def __eq__(self, other):
+        if isinstance(other, SchoolRating):
+            return self.id == other.id
+        return False
 
 
 @dataclass
