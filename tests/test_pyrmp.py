@@ -981,3 +981,342 @@ class TestClientClosedState:
         client.close()
         client.close()
         client.close()  # Should not raise
+
+
+class TestTeacherORMMethods:
+    """Test ORM-like methods on Teacher objects"""
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_teacher_get_ratings_success(self, mock_execute):
+        """Test teacher.get_ratings() returns ratings"""
+        mock_execute.return_value = {
+            "node": {
+                "__typename": "Teacher",
+                "id": "t1",
+                "ratings": {
+                    "edges": [
+                        {"node": {"id": "r1", "clarityRating": 5, "comment": "Great"}}
+                    ],
+                    "pageInfo": {"hasNextPage": False},
+                },
+            }
+        }
+
+        client = RateMyProfessorClient()
+        teacher = Teacher(id="Teacher-123", _client=client)
+        ratings = teacher.get_ratings(count=10)
+
+        assert len(ratings.items) == 1
+        assert ratings.items[0].comment == "Great"
+        client.close()
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_teacher_get_ratings_with_course_filter(self, mock_execute):
+        """Test teacher.get_ratings() with course filter"""
+        mock_execute.return_value = {
+            "node": {
+                "__typename": "Teacher",
+                "id": "t1",
+                "ratings": {
+                    "edges": [
+                        {"node": {"id": "r1", "class": "CS101", "clarityRating": 4}}
+                    ],
+                    "pageInfo": {"hasNextPage": False},
+                },
+            }
+        }
+
+        client = RateMyProfessorClient()
+        teacher = Teacher(id="Teacher-123", _client=client)
+        ratings = teacher.get_ratings(course_filter="CS101")
+
+        assert len(ratings.items) == 1
+        client.close()
+
+    def test_teacher_get_ratings_no_client_raises(self):
+        """Test teacher.get_ratings() without client raises ValueError"""
+        teacher = Teacher(id="Teacher-123")  # No client
+
+        with pytest.raises(ValueError) as exc_info:
+            teacher.get_ratings()
+
+        assert "No client" in str(exc_info.value)
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_teacher_get_details_success(self, mock_execute):
+        """Test teacher.get_details() returns full details"""
+        mock_execute.return_value = {
+            "node": {
+                "__typename": "Teacher",
+                "id": "Teacher-123",
+                "firstName": "John",
+                "lastName": "Smith",
+                "avgRating": 4.5,
+                "wouldTakeAgainPercentRounded": 80.0,
+            }
+        }
+
+        client = RateMyProfessorClient()
+        teacher = Teacher(id="Teacher-123", _client=client)
+        details = teacher.get_details()
+
+        assert details is not None
+        assert details.avg_rating == 4.5
+        assert details.would_take_again_percent == 80.0
+        client.close()
+
+    def test_teacher_get_details_no_client_raises(self):
+        """Test teacher.get_details() without client raises ValueError"""
+        teacher = Teacher(id="Teacher-123")
+
+        with pytest.raises(ValueError) as exc_info:
+            teacher.get_details()
+
+        assert "No client" in str(exc_info.value)
+
+    def test_teacher_get_ratings_invalid_count(self):
+        """Test teacher.get_ratings() with invalid count"""
+        client = RateMyProfessorClient()
+        teacher = Teacher(id="Teacher-123", _client=client)
+
+        # These should raise InvalidQueryError immediately (client-side validation)
+        with pytest.raises(InvalidQueryError):
+            teacher.get_ratings(count=0)
+
+        with pytest.raises(InvalidQueryError):
+            teacher.get_ratings(count=-1)
+
+        with pytest.raises(InvalidQueryError):
+            teacher.get_ratings(count=101)
+
+        client.close()
+
+    def test_teacher_hashable(self):
+        """Test Teacher objects are hashable"""
+        teacher1 = Teacher(id="Teacher-123")
+        teacher2 = Teacher(id="Teacher-123")
+        teacher3 = Teacher(id="Teacher-456")
+
+        assert hash(teacher1) == hash(teacher2)
+        assert hash(teacher1) != hash(teacher3)
+        assert teacher1 == teacher2
+        assert teacher1 != teacher3
+
+        # Can use as dict key
+        teacher_dict = {teacher1: "data"}
+        assert teacher_dict[teacher2] == "data"
+
+        # Can use in set
+        teacher_set = {teacher1, teacher2, teacher3}
+        assert len(teacher_set) == 2
+
+    def test_teacher_client_reference(self):
+        """Test Teacher has client reference after creation"""
+        client = RateMyProfessorClient()
+        teacher = Teacher(id="Teacher-123", _client=client)
+
+        assert teacher._client is client
+        client.close()
+
+
+class TestSchoolORMMethods:
+    """Test ORM-like methods on School objects"""
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_school_get_ratings_success(self, mock_execute):
+        """Test school.get_ratings() returns school ratings"""
+        mock_execute.return_value = {
+            "node": {
+                "__typename": "School",
+                "id": "s1",
+                "ratings": {
+                    "edges": [
+                        {
+                            "node": {
+                                "id": "r1",
+                                "facilitiesRating": 5,
+                                "comment": "Great",
+                            }
+                        }
+                    ],
+                    "pageInfo": {"hasNextPage": False},
+                },
+            }
+        }
+
+        client = RateMyProfessorClient()
+        school = School(id="School-123", _client=client)
+        ratings = school.get_ratings(count=10)
+
+        assert len(ratings.items) == 1
+        assert ratings.items[0].facilities_rating == 5
+        client.close()
+
+    def test_school_get_ratings_no_client_raises(self):
+        """Test school.get_ratings() without client raises ValueError"""
+        school = School(id="School-123")
+
+        with pytest.raises(ValueError) as exc_info:
+            school.get_ratings()
+
+        assert "No client" in str(exc_info.value)
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_school_get_details_success(self, mock_execute):
+        """Test school.get_details() returns full details"""
+        mock_execute.return_value = {
+            "school": {
+                "__typename": "School",
+                "id": "School-123",
+                "name": "MIT",
+                "city": "Cambridge",
+                "numRatings": 5000,
+            }
+        }
+
+        client = RateMyProfessorClient()
+        school = School(id="School-123", _client=client)
+        details = school.get_details()
+
+        assert details is not None
+        assert details.name == "MIT"
+        assert details.num_ratings == 5000
+        client.close()
+
+    def test_school_get_details_no_client_raises(self):
+        """Test school.get_details() without client raises ValueError"""
+        school = School(id="School-123")
+
+        with pytest.raises(ValueError) as exc_info:
+            school.get_details()
+
+        assert "No client" in str(exc_info.value)
+
+    def test_school_hashable(self):
+        """Test School objects are hashable"""
+        school1 = School(id="School-123")
+        school2 = School(id="School-123")
+        school3 = School(id="School-456")
+
+        assert hash(school1) == hash(school2)
+        assert hash(school1) != hash(school3)
+        assert school1 == school2
+        assert school1 != school3
+
+        # Can use as dict key
+        school_dict = {school1: "data"}
+        assert school_dict[school2] == "data"
+
+        # Can use in set
+        school_set = {school1, school2, school3}
+        assert len(school_set) == 2
+
+    def test_school_client_reference(self):
+        """Test School has client reference after creation"""
+        client = RateMyProfessorClient()
+        school = School(id="School-123", _client=client)
+
+        assert school._client is client
+        client.close()
+
+
+class TestRatingHashable:
+    """Test Rating objects are hashable"""
+
+    def test_rating_hashable(self):
+        """Test Rating objects are hashable"""
+        rating1 = Rating(id="Rating-123")
+        rating2 = Rating(id="Rating-123")
+        rating3 = Rating(id="Rating-456")
+
+        assert hash(rating1) == hash(rating2)
+        assert hash(rating1) != hash(rating3)
+        assert rating1 == rating2
+        assert rating1 != rating3
+
+        # Can use as dict key
+        rating_dict = {rating1: "data"}
+        assert rating_dict[rating2] == "data"
+
+    def test_school_rating_hashable(self):
+        """Test SchoolRating objects are hashable"""
+        sr1 = SchoolRating(id="SR-123")
+        sr2 = SchoolRating(id="SR-123")
+        sr3 = SchoolRating(id="SR-456")
+
+        assert hash(sr1) == hash(sr2)
+        assert hash(sr1) != hash(sr3)
+        assert sr1 == sr2
+        assert sr1 != sr3
+
+
+class TestORMNegativeInputs:
+    """Test ORM methods with invalid/negative inputs"""
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_teacher_get_ratings_with_invalid_teacher_id(self, mock_execute):
+        """Test teacher.get_ratings() with invalid teacher ID"""
+        mock_execute.return_value = {
+            "node": {
+                "__typename": "Teacher",
+                "id": "t1",
+                "ratings": {"edges": [], "pageInfo": {"hasNextPage": False}},
+            }
+        }
+
+        client = RateMyProfessorClient()
+        teacher = Teacher(id="invalid-id", _client=client)
+        ratings = teacher.get_ratings()
+
+        assert len(ratings.items) == 0
+        client.close()
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_teacher_get_details_not_found(self, mock_execute):
+        """Test teacher.get_details() returns None for non-existent teacher"""
+        mock_execute.return_value = {"node": None}
+
+        client = RateMyProfessorClient()
+        teacher = Teacher(id="nonexistent", _client=client)
+        details = teacher.get_details()
+
+        assert details is None
+        client.close()
+
+    @patch.object(RateMyProfessorClient, "_execute_query")
+    def test_school_get_details_not_found(self, mock_execute):
+        """Test school.get_details() returns None for non-existent school"""
+        mock_execute.return_value = {"school": None}
+
+        client = RateMyProfessorClient()
+        school = School(id="nonexistent", _client=client)
+        details = school.get_details()
+
+        assert details is None
+        client.close()
+
+    def test_teacher_empty_id(self):
+        """Test Teacher with empty ID is hashable"""
+        teacher = Teacher(id="")
+        assert hash(teacher) == hash("")
+
+    def test_school_empty_id(self):
+        """Test School with empty ID is hashable"""
+        school = School(id="")
+        assert hash(school) == hash("")
+
+    def test_teacher_none_client(self):
+        """Test Teacher with None client"""
+        teacher = Teacher(id="Teacher-123", _client=None)
+        assert teacher._client is None
+
+        with pytest.raises(ValueError):
+            teacher.get_ratings()
+
+    def test_school_none_client(self):
+        """Test School with None client"""
+        school = School(id="School-123", _client=None)
+        assert school._client is None
+
+        with pytest.raises(ValueError):
+            school.get_ratings()

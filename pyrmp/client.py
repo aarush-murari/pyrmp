@@ -575,6 +575,9 @@ class RateMyProfessorClient:
             # Filter by course
             cs_ratings = client.get_teacher_ratings(teacher_id, course_filter="CS101")
         """
+        if count < 1 or count > 100:
+            raise InvalidQueryError(f"count must be between 1 and 100, got {count}")
+
         variables = {
             "count": count,
             "id": _encode_id(teacher_id),
@@ -631,6 +634,9 @@ class RateMyProfessorClient:
                 print(f"Comment: {rating.comment}")
                 print("---")
         """
+        if count < 1 or count > 100:
+            raise InvalidQueryError(f"count must be between 1 and 100, got {count}")
+
         variables = {"count": count, "id": _encode_id(school_id), "cursor": cursor}
 
         response = self._execute_query(SCHOOLRATINGSLIST_QUERY, variables)

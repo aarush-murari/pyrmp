@@ -42,7 +42,7 @@ class School:
 
     Usage::
 
-        school = client.get_school_details("VGVhY2hlci0xMjM=")
+        school = client.get_school_details("Teacher-123")
         print(school.name)      # "Stanford University"
         print(school.num_ratings)  # 5000
         print(school.avg_rating)   # 4.2
@@ -51,6 +51,14 @@ class School:
         results = client.search_schools("MIT")
         for school in results.items:
             print(school.name, school.city, school.state)
+
+        # Get ratings (ORM method)
+        ratings = school.get_ratings(count=10)
+        for rating in ratings.items:
+            print(rating.facilities_rating, rating.comment)
+
+        # Get details (ORM method)
+        details = school.get_details()
 
     Attributes:
         id: Unique identifier for this school (used in API calls).
@@ -171,10 +179,15 @@ class Teacher:
         if teacher.school:
             print(teacher.school.name)  # "Stanford University"
 
-        # Get more details
-        details = client.get_teacher_details(teacher.id)
+        # Get more details (ORM method)
+        details = teacher.get_details()
         print(details.would_take_again_percent)  # 80.0
         print(details.avg_difficulty)            # 3.0
+
+        # Get ratings (ORM method)
+        ratings = teacher.get_ratings(count=10)
+        for rating in ratings.items:
+            print(rating.clarity_rating, rating.comment)
 
     Attributes:
         id: Unique identifier for this teacher (used in API calls).
