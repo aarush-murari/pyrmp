@@ -95,9 +95,12 @@
 <span class="sd">    client.close()</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Union</span><span class="p">,</span> <span class="n">TYPE_CHECKING</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">.client</span><span class="w"> </span><span class="kn">import</span> <span class="n">RateMyProfessorClient</span>
 
 
 <div class="viewcode-block" id="School">
@@ -147,6 +150,57 @@
     <span class="n">avg_rating_rounded</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">departments</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">summary</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="School.get_ratings">
+<a class="viewcode-back" href="../../api.html#pyrmp.models.School.get_ratings">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ratings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get ratings for this school.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            count: How many ratings (1-100). Defaults to 20.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            PaginatedResult with SchoolRating objects.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            results = client.search_schools(&quot;MIT&quot;)</span>
+<span class="sd">            school = results.items[0]</span>
+<span class="sd">            ratings = school.get_ratings(count=10)</span>
+<span class="sd">            for rating in ratings.items:</span>
+<span class="sd">                print(rating.facilities_rating, rating.comment)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;No client associated. Use client.search_schools() or client.get_school_details() first.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get_school_ratings</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="School.get_details">
+<a class="viewcode-back" href="../../api.html#pyrmp.models.School.get_details">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get full details for this school.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            School object with all fields populated.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            results = client.search_schools(&quot;MIT&quot;)</span>
+<span class="sd">            school = results.items[0]</span>
+<span class="sd">            details = school.get_details()</span>
+<span class="sd">            print(details.num_ratings)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;No client associated. Use client.search_schools() or client.get_school_details() first.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get_school_details</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">parts</span> <span class="o">=</span> <span class="p">[]</span>
@@ -237,6 +291,66 @@
     <span class="n">course_codes</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">lock_status</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">is_saved</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">bool</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">_client</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Any</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="nb">repr</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">compare</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Teacher.get_ratings">
+<a class="viewcode-back" href="../../api.html#pyrmp.models.Teacher.get_ratings">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_ratings</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">count</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">course_filter</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get ratings for this teacher.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            count: How many ratings (1-100). Defaults to 20.</span>
+<span class="sd">            course_filter: Only get ratings for a specific course (e.g., &quot;CS101&quot;).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            PaginatedResult with Rating objects.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            RateMyProfessorError: If no client is associated with this teacher.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            results = client.search_teachers(&quot;John Smith&quot;)</span>
+<span class="sd">            teacher = results.items[0]</span>
+<span class="sd">            ratings = teacher.get_ratings(count=10)</span>
+<span class="sd">            for rating in ratings.items:</span>
+<span class="sd">                print(rating.clarity_rating, rating.comment)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;No client associated. Use client.search_teachers() or client.get_teacher_details() first.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get_teacher_ratings</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">course_filter</span><span class="o">=</span><span class="n">course_filter</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="Teacher.get_details">
+<a class="viewcode-back" href="../../api.html#pyrmp.models.Teacher.get_details">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">get_details</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get full details for this teacher.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Teacher object with all fields populated.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            RateMyProfessorError: If no client is associated with this teacher.</span>
+
+<span class="sd">        Example::</span>
+
+<span class="sd">            results = client.search_teachers(&quot;John Smith&quot;)</span>
+<span class="sd">            teacher = results.items[0]</span>
+<span class="sd">            details = teacher.get_details()</span>
+<span class="sd">            print(details.would_take_again_percent)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;No client associated. Use client.search_teachers() or client.get_teacher_details() first.&quot;</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_client</span><span class="o">.</span><span class="n">get_teacher_details</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
+
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">full_name</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
