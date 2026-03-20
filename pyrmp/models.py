@@ -24,9 +24,12 @@ Typical usage::
     client.close()
 """
 
-from typing import Optional, List, Dict, Any, Union
-from dataclasses import dataclass
+from typing import Optional, List, Dict, Any, Union, TYPE_CHECKING
+from dataclasses import dataclass, field
 from datetime import datetime
+
+if TYPE_CHECKING:
+    from .client import RateMyProfessorClient
 
 
 @dataclass
@@ -74,6 +77,51 @@ class School:
     avg_rating_rounded: Optional[float] = None
     departments: Optional[List[Dict[str, Any]]] = None
     summary: Optional[Dict[str, Any]] = None
+    _client: Optional[Any] = field(default=None, repr=False, compare=False)
+
+    def get_ratings(self, count: int = 20):
+        """
+        Get ratings for this school.
+
+        Args:
+            count: How many ratings (1-100). Defaults to 20.
+
+        Returns:
+            PaginatedResult with SchoolRating objects.
+
+        Example::
+
+            results = client.search_schools("MIT")
+            school = results.items[0]
+            ratings = school.get_ratings(count=10)
+            for rating in ratings.items:
+                print(rating.facilities_rating, rating.comment)
+        """
+        if self._client is None:
+            raise ValueError(
+                "No client associated. Use client.search_schools() or client.get_school_details() first."
+            )
+        return self._client.get_school_ratings(self.id, count=count)
+
+    def get_details(self):
+        """
+        Get full details for this school.
+
+        Returns:
+            School object with all fields populated.
+
+        Example::
+
+            results = client.search_schools("MIT")
+            school = results.items[0]
+            details = school.get_details()
+            print(details.num_ratings)
+        """
+        if self._client is None:
+            raise ValueError(
+                "No client associated. Use client.search_schools() or client.get_school_details() first."
+            )
+        return self._client.get_school_details(self.id)
 
     def __str__(self):
         parts = []
@@ -161,6 +209,60 @@ class Teacher:
     course_codes: Optional[List[str]] = None
     lock_status: Optional[str] = None
     is_saved: Optional[bool] = None
+    _client: Optional[Any] = field(default=None, repr=False, compare=False)
+
+    def get_ratings(self, count: int = 20, course_filter: Optional[str] = None):
+        """
+        Get ratings for this teacher.
+
+        Args:
+            count: How many ratings (1-100). Defaults to 20.
+            course_filter: Only get ratings for a specific course (e.g., "CS101").
+
+        Returns:
+            PaginatedResult with Rating objects.
+
+        Raises:
+            RateMyProfessorError: If no client is associated with this teacher.
+
+        Example::
+
+            results = client.search_teachers("John Smith")
+            teacher = results.items[0]
+            ratings = teacher.get_ratings(count=10)
+            for rating in ratings.items:
+                print(rating.clarity_rating, rating.comment)
+        """
+        if self._client is None:
+            raise ValueError(
+                "No client associated. Use client.search_teachers() or client.get_teacher_details() first."
+            )
+        return self._client.get_teacher_ratings(
+            self.id, count=count, course_filter=course_filter
+        )
+
+    def get_details(self):
+        """
+        Get full details for this teacher.
+
+        Returns:
+            Teacher object with all fields populated.
+
+        Raises:
+            RateMyProfessorError: If no client is associated with this teacher.
+
+        Example::
+
+            results = client.search_teachers("John Smith")
+            teacher = results.items[0]
+            details = teacher.get_details()
+            print(details.would_take_again_percent)
+        """
+        if self._client is None:
+            raise ValueError(
+                "No client associated. Use client.search_teachers() or client.get_teacher_details() first."
+            )
+        return self._client.get_teacher_details(self.id)
 
     @property
     def full_name(self) -> Optional[str]:

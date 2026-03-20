@@ -220,7 +220,7 @@ class RateMyProfessorClient:
             A Teacher dataclass instance.
         """
         if not teacher_node:
-            return Teacher(id="")
+            return Teacher(id="", _client=self)
 
         school = None
         if teacher_node.get("school"):
@@ -235,6 +235,7 @@ class RateMyProfessorClient:
                 num_ratings=school_data.get("numRatings"),
                 avg_rating=school_data.get("avgRating"),
                 avg_rating_rounded=school_data.get("avgRatingRounded"),
+                _client=self,
             )
 
         return Teacher(
@@ -255,6 +256,7 @@ class RateMyProfessorClient:
             ],
             lock_status=teacher_node.get("lockStatus"),
             is_saved=teacher_node.get("isSaved"),
+            _client=self,
         )
 
     def _parse_school_node(self, school_node: Dict[str, Any]) -> School:
