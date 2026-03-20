@@ -194,10 +194,15 @@ getting details about professors.</p>
 <span class="k">if</span> <span class="n">teacher</span><span class="o">.</span><span class="n">school</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">teacher</span><span class="o">.</span><span class="n">school</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>  <span class="c1"># &quot;Stanford University&quot;</span>
 
-<span class="c1"># Get more details</span>
-<span class="n">details</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_teacher_details</span><span class="p">(</span><span class="n">teacher</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+<span class="c1"># Get more details (ORM method)</span>
+<span class="n">details</span> <span class="o">=</span> <span class="n">teacher</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">would_take_again_percent</span><span class="p">)</span>  <span class="c1"># 80.0</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">details</span><span class="o">.</span><span class="n">avg_difficulty</span><span class="p">)</span>            <span class="c1"># 3.0</span>
+
+<span class="c1"># Get ratings (ORM method)</span>
+<span class="n">ratings</span> <span class="o">=</span> <span class="n">teacher</span><span class="o">.</span><span class="n">get_ratings</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">rating</span> <span class="ow">in</span> <span class="n">ratings</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">rating</span><span class="o">.</span><span class="n">clarity_rating</span><span class="p">,</span> <span class="n">rating</span><span class="o">.</span><span class="n">comment</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="py attribute">
@@ -444,7 +449,7 @@ Useful for display purposes.</p>
 <p>You’ll get School objects when searching for schools or when a teacher
 is associated with a school.</p>
 <p>Usage:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">school</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_school_details</span><span class="p">(</span><span class="s2">&quot;VGVhY2hlci0xMjM=&quot;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">school</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get_school_details</span><span class="p">(</span><span class="s2">&quot;Teacher-123&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">school</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>      <span class="c1"># &quot;Stanford University&quot;</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">school</span><span class="o">.</span><span class="n">num_ratings</span><span class="p">)</span>  <span class="c1"># 5000</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">school</span><span class="o">.</span><span class="n">avg_rating</span><span class="p">)</span>   <span class="c1"># 4.2</span>
@@ -453,6 +458,14 @@ is associated with a school.</p>
 <span class="n">results</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search_schools</span><span class="p">(</span><span class="s2">&quot;MIT&quot;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">school</span> <span class="ow">in</span> <span class="n">results</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">school</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">school</span><span class="o">.</span><span class="n">city</span><span class="p">,</span> <span class="n">school</span><span class="o">.</span><span class="n">state</span><span class="p">)</span>
+
+<span class="c1"># Get ratings (ORM method)</span>
+<span class="n">ratings</span> <span class="o">=</span> <span class="n">school</span><span class="o">.</span><span class="n">get_ratings</span><span class="p">(</span><span class="n">count</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">rating</span> <span class="ow">in</span> <span class="n">ratings</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">rating</span><span class="o">.</span><span class="n">facilities_rating</span><span class="p">,</span> <span class="n">rating</span><span class="o">.</span><span class="n">comment</span><span class="p">)</span>
+
+<span class="c1"># Get details (ORM method)</span>
+<span class="n">details</span> <span class="o">=</span> <span class="n">school</span><span class="o">.</span><span class="n">get_details</span><span class="p">()</span>
 </pre></div>
 </div>
 <dl class="py attribute">

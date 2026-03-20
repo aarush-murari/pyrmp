@@ -115,7 +115,7 @@
 
 <span class="sd">    Usage::</span>
 
-<span class="sd">        school = client.get_school_details(&quot;VGVhY2hlci0xMjM=&quot;)</span>
+<span class="sd">        school = client.get_school_details(&quot;Teacher-123&quot;)</span>
 <span class="sd">        print(school.name)      # &quot;Stanford University&quot;</span>
 <span class="sd">        print(school.num_ratings)  # 5000</span>
 <span class="sd">        print(school.avg_rating)   # 4.2</span>
@@ -124,6 +124,14 @@
 <span class="sd">        results = client.search_schools(&quot;MIT&quot;)</span>
 <span class="sd">        for school in results.items:</span>
 <span class="sd">            print(school.name, school.city, school.state)</span>
+
+<span class="sd">        # Get ratings (ORM method)</span>
+<span class="sd">        ratings = school.get_ratings(count=10)</span>
+<span class="sd">        for rating in ratings.items:</span>
+<span class="sd">            print(rating.facilities_rating, rating.comment)</span>
+
+<span class="sd">        # Get details (ORM method)</span>
+<span class="sd">        details = school.get_details()</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        id: Unique identifier for this school (used in API calls).</span>
@@ -253,10 +261,15 @@
 <span class="sd">        if teacher.school:</span>
 <span class="sd">            print(teacher.school.name)  # &quot;Stanford University&quot;</span>
 
-<span class="sd">        # Get more details</span>
-<span class="sd">        details = client.get_teacher_details(teacher.id)</span>
+<span class="sd">        # Get more details (ORM method)</span>
+<span class="sd">        details = teacher.get_details()</span>
 <span class="sd">        print(details.would_take_again_percent)  # 80.0</span>
 <span class="sd">        print(details.avg_difficulty)            # 3.0</span>
+
+<span class="sd">        # Get ratings (ORM method)</span>
+<span class="sd">        ratings = teacher.get_ratings(count=10)</span>
+<span class="sd">        for rating in ratings.items:</span>
+<span class="sd">            print(rating.clarity_rating, rating.comment)</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        id: Unique identifier for this teacher (used in API calls).</span>
