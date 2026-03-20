@@ -10,7 +10,7 @@ readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MPL-2.0"}
 authors = [
-    {name = "Aarush", email = "aarush@example.com"}
+    {name = "Aarush Murari", email = "aarush.murari@gmail.com"}
 ]
 keywords = ["ratemyprofessor", "api", "graphql", "education", "ratings"]
 classifiers = [
